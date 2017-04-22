@@ -1,8 +1,9 @@
 #include "PlantVisual.h"
+#include "PlantLogic.h"
+#include "IGardenEntityState.h"
 
-PlantVisual::PlantVisual(CoordsInt _seed, std::vector<CoordsInt> _grownTiles)
-:m_seed(_seed)
-, m_grownTiles(_grownTiles)
+PlantVisual::PlantVisual(PlantLogic* _logic)
+:logic(_logic)
 , m_growthColor(cinderColor(0.286, 0.475, 0.161))
 , m_seedColor(cinderColor(0.42, 0.659, 0.263))
 {
@@ -10,11 +11,11 @@ PlantVisual::PlantVisual(CoordsInt _seed, std::vector<CoordsInt> _grownTiles)
 }
 
 CoordsInt PlantVisual::getSeed() const {
-	return m_seed;
+	return logic->getInitialPosition();
 }
 
 std::vector<CoordsInt> PlantVisual::getGrownTiles() const {
-	return m_grownTiles;
+	return logic->getCurrentState()->occupiedPositions();
 }
 
 cinderColor PlantVisual::getPlantTile(CoordsInt tile)

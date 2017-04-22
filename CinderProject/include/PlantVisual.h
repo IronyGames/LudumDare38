@@ -2,16 +2,17 @@
 
 #include "Typedef.h"
 
+class PlantLogic;
+
 class PlantVisual{
 public:
-	PlantVisual(CoordsInt _seed, std::vector<CoordsInt> _grownTiles);
+	PlantVisual(PlantLogic* _logic);
 	std::vector<CoordsInt> getGrownTiles() const;
 	CoordsInt getSeed() const;
 	cinderColor getPlantTile(CoordsInt tile);
 	cinderColor getSeedTile();
 private:
-	CoordsInt m_seed;
-	std::vector<CoordsInt> m_grownTiles;
+	PlantLogic* logic;
 	cinderColor m_growthColor;
 	cinderColor m_seedColor;
 };

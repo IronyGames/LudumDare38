@@ -4,6 +4,7 @@
 #include "Typedef.h"
 
 class Viewer;
+class GardenVisual;
 
 class Controller : public cinder::app::App {
 public:
@@ -13,4 +14,5 @@ public:
 	void draw() override;
 private:
 	Viewer *viewer;
+	GardenVisual *g;
 };

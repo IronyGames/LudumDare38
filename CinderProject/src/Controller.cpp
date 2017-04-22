@@ -19,7 +19,9 @@ void Controller::setup()
 	setFrameRate(viewer->getFramesPerSecond());
 	setWindowSize(viewer->getWindowSize());
 	std::vector<IGardenEntityLogic*> pes = {
-		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(2, 2), Year(30))
+		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(2, 2), Year(56)),
+		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(0, 4), Year(23)),
+		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(1, 5), Year(7)),
 	};
 	gardenLogic = new GardenLogic(GardenRules(Segment<Year>(0,100,0), 4, 6), pes);
 	g = new GardenVisual(gardenLogic);
@@ -37,7 +39,7 @@ void Controller::update()
 {
 	bool isConnected = levelManagerEventListenerConnection.isConnected();
 	int a = 0;
-	gardenLogic->updateGardenDelta(0.075);
+	gardenLogic->updateGardenDelta(0.08);
 }
 
 void Controller::draw()

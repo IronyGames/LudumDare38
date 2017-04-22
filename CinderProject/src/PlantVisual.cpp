@@ -6,6 +6,7 @@ PlantVisual::PlantVisual(PlantLogic* _logic)
 :m_logic(_logic)
 , m_growthColor(cinderColor(0.286, 0.475, 0.161))
 , m_seedColor(cinderColor(0.42, 0.659, 0.263))
+, m_timelineColor(cinderColor(0.631, 0.847, 0.565))
 {
 
 }
@@ -31,4 +32,14 @@ cinderColor PlantVisual::getSeedTile()
 double PlantVisual::getSeedYear()
 {
 	return m_logic->getSeedYear();
+}
+
+cinderColor PlantVisual::getTimelineColor()
+{
+	return m_timelineColor;
+}
+
+double PlantVisual::getMaxAge()
+{
+	return 10.0; //TODO
 }

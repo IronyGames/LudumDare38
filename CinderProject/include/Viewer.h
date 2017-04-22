@@ -26,10 +26,11 @@ private:
 	int tileSeparator;
 	int timeLineHeight;
 	int timeLineMargin;
+	int markerHeight;
 	CoordsInt getTileTranslation(CoordsInt tile);
 	DimensionsInt getGardenSize(DimensionsInt size);
 	void renderTimeline(cinderColor color, int startingX, int endingX, int markerX, int markerWidth);
-	void renderPlantTimelines(std::vector<PlantVisual*> plants);
+	void renderPlantTimelines(std::vector<PlantVisual*> plants, double timepixelRelation, double currentYear);
 public:
 	Viewer();
 	void render(std::vector<Animation2D*> *_text);

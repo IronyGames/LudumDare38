@@ -12,8 +12,11 @@ public:
 	cinderColor getPlantTile(CoordsInt tile);
 	cinderColor getSeedTile();
 	double getSeedYear();
+	cinderColor getTimelineColor();
+	double getMaxAge();
 private:
 	PlantLogic* m_logic;
 	cinderColor m_growthColor;
 	cinderColor m_seedColor;
+	cinderColor m_timelineColor;
 };

@@ -2,17 +2,9 @@
 
 #include "Typedef.h"
 #include "Segment.h"
+#include "GardenRules.h"
 
 class IGardenEntityLogic;
-
-struct GardenRules
-{
-	GardenRules(Segment<Year> _timeline, unsigned _gardenWidth, unsigned _gardenHeight);
-	Segment<Year> timeline;
-
-	unsigned gardenWidth = 0;
-	unsigned gardenHeight = 0;
-};
 
 class GardenLogic
 {

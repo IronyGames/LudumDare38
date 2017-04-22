@@ -5,6 +5,8 @@
 
 class Viewer;
 class GardenVisual;
+class LevelManager;
+class InputController;
 
 class Controller : public cinder::app::App {
 public:
@@ -15,4 +17,9 @@ public:
 private:
 	Viewer *viewer;
 	GardenVisual *g;
+
+	owner<LevelManager>		levelManager;
+	owner<InputController>	inputController;
+
+	cinder::signals::ScopedConnection levelManagerEventListenerConnection;
 };

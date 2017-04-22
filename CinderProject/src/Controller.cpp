@@ -8,6 +8,7 @@
 #include "InputController.h"
 #include "GardenLogic.h"
 #include "PlantLogic.h"
+#include "LevelBuilder.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,14 +20,10 @@ void Controller::setup()
 	setFrameRate(viewer->getFramesPerSecond());
 	setWindowSize(viewer->getWindowSize());
 
-	std::vector<IGardenEntityLogic*> pes = {
-		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(2, 2), Year(30))
-	};
-	GardenLogic *gl = new GardenLogic(GardenRules(Segment<Year>(0,100,0), 4, 6), pes);
-	g = new GardenVisual(gl);
+	LevelBuilder levelBuilder;
+	std::vector<Level> levels = levelBuilder.LoadLevels("path");
 
-
-	levelManager = new LevelManager();
+	levelManager = new LevelManager( std::move(levels) );
 	inputController = new InputController( getWindow() );
 	levelManagerEventListenerConnection = inputController->RegisterEventListener( levelManager );
 }
@@ -37,14 +34,12 @@ void Controller::mouseDown( MouseEvent event )
 
 void Controller::update()
 {
-	bool isConnected = levelManagerEventListenerConnection.isConnected();
-	int a = 0;
 }
 
 void Controller::draw()
 {
 	viewer->begin();
-	viewer->render(g);
+	viewer->render( levelManager->getGardenVisual());
 	viewer->end();
 }
 

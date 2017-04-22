@@ -16,7 +16,6 @@ public:
 	void draw() override;
 private:
 	Viewer *viewer;
-	GardenVisual *g;
 
 	owner<LevelManager>		levelManager;
 	owner<InputController>	inputController;

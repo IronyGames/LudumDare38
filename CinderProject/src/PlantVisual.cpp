@@ -11,11 +11,14 @@ PlantVisual::PlantVisual(PlantLogic* _logic)
 }
 
 CoordsInt PlantVisual::getSeed() const {
-	return logic->getInitialPosition();
+	return CoordsInt();
+	// david: check this
+
+	//return logic->getLifeExpectancy();
 }
 
 std::vector<CoordsInt> PlantVisual::getGrownTiles() const {
-	return logic->getCurrentState()->occupiedPositions();
+	return logic->getCurrentState()->getOccupiedPositions();
 }
 
 cinderColor PlantVisual::getPlantTile(CoordsInt tile)

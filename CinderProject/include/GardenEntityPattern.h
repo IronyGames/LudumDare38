@@ -4,11 +4,17 @@
 
 #include <set>
 #include <vector>
+#include "Segment.h"
 
-struct PlantPattern
+struct GardenEntityPattern
 {
 	struct Pattern
 	{
+		Pattern() = default;
+		Pattern( Year year_ )
+			: year(year_)
+		{}
+
 		Year year = 0;
 		std::vector<CoordsInt> relativePositions;
 
@@ -18,6 +24,6 @@ struct PlantPattern
 		}
 	};
 
-	std::set<Pattern> treePatterns;
-	Year lifeRange;
+	std::set<Pattern>	treePatterns;
+	Segment<Year>		lifeRange;
 };

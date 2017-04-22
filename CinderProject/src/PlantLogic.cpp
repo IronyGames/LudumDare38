@@ -1,23 +1,39 @@
 #include "PlantLogic.h"
 #include "IGardenEntityState.h"
+#include "GardenEntityPattern.h"
 
-struct PlantLogicState : public IGardenEntityState
+#include <unordered_set>
+
+class PlantLogicState : public IGardenEntityState
 {
-	std::vector<CoordsInt> occupiedPositions() const override
+public:
+	std::vector<CoordsInt> getOccupiedPositions() const override
 	{
-		return m_occupiedPositions;
+		return occupiedPositions;
+	}
+
+	Year currentAge() const override
+	{
+		return age;
+	}
+
+	CoordsInt getPosition() const
+	{
+		return seedPosition;
 	}
 	
-	std::vector<CoordsInt> m_occupiedPositions;
+	std::vector<CoordsInt> occupiedPositions;
+	Year age;
+	CoordsInt seedPosition;
 };
 
-PlantLogic::PlantLogic( EPlantType type_, PlantPattern pattern_, CoordsInt initialPos_, Year seedYear_ )
-	: type(type_)
-	, pattern(pattern_)
-	, initialPosition(initialPos_)
-	, seedYear(seedYear_)
+PlantLogic::PlantLogic( GardenEntityPattern pattern_, Year age_, CoordsInt pos_ )
+	: pattern(pattern_)
 	, state( new PlantLogicState )
-{}
+{
+	state->age = age_;
+	state->seedPosition = pos_;
+}
 
 PlantLogic::~PlantLogic()
 {
@@ -32,24 +48,43 @@ const IGardenEntityState* PlantLogic::getCurrentState() const
 void PlantLogic::setCurrentState( owner<IGardenEntityState> state_ )
 {
 	delete state;
-	state = state_;
+	//state = state_;
 }
 
-CoordsInt PlantLogic::getInitialPosition() const
+CoordsInt PlantLogic::getPosition() const
 {
-	return initialPosition;
+	return state->getPosition();
 }
 
-Year PlantLogic::getSeedYear() const
+Segment<Year> PlantLogic::getCurrentLife() const
 {
-	return seedYear;
+	return pattern.lifeRange;
 }
 
-PlantLogic::CalculateStateResult PlantLogic::calculateStateTo( Year year_ ) const
+Year PlantLogic::getAge() const
+{
+	return state->currentAge();
+}
+
+PlantLogic::CalculateStateResult PlantLogic::calculateStateTo( Year deltaYear ) const
 {
 	CalculateStateResult result;
 
+	Segment<Year> currentYear = getCurrentLife();
+	currentYear += deltaYear;
+	auto it = pattern.treePatterns.lower_bound( currentYear.get() );
+	if (it != pattern.treePatterns.end() )
+	{
+		CoordsInt initialPos = getPosition();
+		std::vector<CoordsInt> o = getCurrentState()->getOccupiedPositions();
+		std::unordered_set<CoordsInt> occupiedPositions( o.begin(), o.end() );
 
+		for ( CoordsInt relativePos : it->relativePositions)
+		{
+			occupiedPositions.emplace(relativePos + initialPos);
+		}
+		result.occupiedPositions.insert( result.occupiedPositions.end(), occupiedPositions.begin(), occupiedPositions.end() );
+	}
 
 	return result;
 }

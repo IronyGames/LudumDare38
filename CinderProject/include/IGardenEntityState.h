@@ -9,5 +9,6 @@ class IGardenEntityState
 public:
 	virtual ~IGardenEntityState() = default;
 
-	virtual std::vector<CoordsInt> occupiedPositions() const = 0;
+	virtual std::vector<CoordsInt> getOccupiedPositions() const = 0;
+	virtual Year currentAge() const = 0;
 };

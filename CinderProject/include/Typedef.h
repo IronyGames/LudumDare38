@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 typedef std::string String;
 
@@ -17,3 +19,8 @@ typedef cinder::JsonTree CinderJson;
 
 #include "cinder/DataSource.h"
 typedef cinder::DataSourceRef CinderDataSource;
+
+using Year = double;
+
+template<typename T>
+using owner = T*;

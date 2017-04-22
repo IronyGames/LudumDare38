@@ -12,7 +12,10 @@ public:
 	DimensionsInt getGardenSize() const;
 	std::vector<PlantVisual*> getPlants() const;
 	cinderColor getSoilTile(CoordsInt position) const;
+	Segment<Year> getTimeline();
+	cinderColor getTimelineColor() const;
 private:
-	const GardenLogic *logic;
+	const GardenLogic *m_logic;
 	cinderColor m_soilColor;
+	cinderColor m_timelineColor;
 };

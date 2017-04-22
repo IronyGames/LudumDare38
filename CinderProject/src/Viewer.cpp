@@ -13,8 +13,10 @@ Viewer::Viewer()
 , zoom(1.0)
 , framesPerSecond(60)
 , backgroundColor(new cinderColor(0.216, 0.353, 0.486))
-, tileSize(50)
-, tileSeparator(5)
+, tileSize(30)
+, tileSeparator(2)
+, timeLineHeight(5)
+, timeLineMargin(10)
 {
 
 }
@@ -94,12 +96,40 @@ void Viewer::end()
 void Viewer::render(GardenVisual *garden)
 {
 	DimensionsInt size = garden->getGardenSize();
-
-	int translation = tileSize + tileSeparator;
 	DimensionsInt halfSize = getGardenSize(size);
 	
 	cinder::gl::pushMatrices();
-	cinder::gl::translate((windowSize-halfSize) / 2);
+	cinder::gl::translate((windowSize - halfSize).x / 2, (windowSize - halfSize).y / 3);
+	renderGarden(garden);
+	render(garden->getPlants());
+	cinder::gl::popMatrices();
+
+	cinder::gl::pushMatrices();
+	cinder::gl::translate(0, 2 * (windowSize).y / 3);
+	renderGardenTimeline(garden);
+	renderPlantTimelines(garden->getPlants());
+	cinder::gl::popMatrices();
+}
+
+void Viewer::renderGardenTimeline(GardenVisual *garden)
+{
+	cinderColor color = garden->getTimelineColor();
+	int startingX = timeLineMargin, endingX = windowSize.x - timeLineMargin;
+	int markerWidth = timeLineHeight;
+
+	Segment<double> timeline = garden->getTimeline();
+	double timepixelRelation = (timeline.getMax() - timeline.getMin()) / (endingX - startingX);
+	double pixelPresent = timepixelRelation * timeline.get();
+
+	renderTimeline(color, startingX, endingX, pixelPresent, markerWidth);
+	renderPlantTimelines(garden->getPlants());
+}
+
+void Viewer::renderGarden(GardenVisual *garden)
+{
+	DimensionsInt size = garden->getGardenSize();
+	int translation = tileSize + tileSeparator;
+
 	cinder::gl::pushMatrices();
 	for (int r = 0; r < size.y; r++){
 		cinder::gl::pushMatrices();
@@ -110,8 +140,6 @@ void Viewer::render(GardenVisual *garden)
 		cinder::gl::popMatrices();
 		cinder::gl::translate(0, translation, 0);
 	}
-	cinder::gl::popMatrices();
-	render(garden->getPlants());
 	cinder::gl::popMatrices();
 }
 
@@ -155,4 +183,29 @@ void Viewer::renderTile(cinderColor tileColor)
 {
 	cinder::gl::color(tileColor);
 	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, tileSize, tileSize));
+}
+
+void Viewer::renderTimeline(cinderColor color, int startingX, int endingX, int markerX, int markerWidth)
+{
+	cinder::gl::pushMatrices();
+	cinder::gl::color(color);
+	cinder::gl::drawSolidRect(cinder::Rectf(startingX, 0, endingX, timeLineHeight));
+	cinder::gl::translate(startingX, 0);
+	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, markerWidth, 3 * timeLineHeight));
+
+	cinder::gl::translate(markerX, 0);
+	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, markerWidth, 3 * timeLineHeight));
+	cinder::gl::popMatrices();
+
+	cinder::gl::pushMatrices();
+	cinder::gl::translate(endingX - markerWidth, 0);
+	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, markerWidth, 3 * timeLineHeight));
+	cinder::gl::popMatrices();
+}
+
+void Viewer::renderPlantTimelines(std::vector<PlantVisual*> plants)
+{
+	for (auto plant : plants){
+		double start = plant->getSeedYear();
+	}
 }

@@ -11,8 +11,9 @@ public:
 	CoordsInt getSeed() const;
 	cinderColor getPlantTile(CoordsInt tile);
 	cinderColor getSeedTile();
+	double getSeedYear();
 private:
-	PlantLogic* logic;
+	PlantLogic* m_logic;
 	cinderColor m_growthColor;
 	cinderColor m_seedColor;
 };

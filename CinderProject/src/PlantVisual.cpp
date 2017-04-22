@@ -3,7 +3,7 @@
 #include "IGardenEntityState.h"
 
 PlantVisual::PlantVisual(PlantLogic* _logic)
-:logic(_logic)
+:m_logic(_logic)
 , m_growthColor(cinderColor(0.286, 0.475, 0.161))
 , m_seedColor(cinderColor(0.42, 0.659, 0.263))
 {
@@ -11,11 +11,11 @@ PlantVisual::PlantVisual(PlantLogic* _logic)
 }
 
 CoordsInt PlantVisual::getSeed() const {
-	return logic->getInitialPosition();
+	return m_logic->getInitialPosition();
 }
 
 std::vector<CoordsInt> PlantVisual::getGrownTiles() const {
-	return logic->getCurrentState()->occupiedPositions();
+	return m_logic->getCurrentState()->occupiedPositions();
 }
 
 cinderColor PlantVisual::getPlantTile(CoordsInt tile)
@@ -26,4 +26,9 @@ cinderColor PlantVisual::getPlantTile(CoordsInt tile)
 cinderColor PlantVisual::getSeedTile()
 {
 	return m_seedColor;
+}
+
+double PlantVisual::getSeedYear()
+{
+	return m_logic->getSeedYear();
 }

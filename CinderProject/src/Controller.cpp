@@ -16,8 +16,6 @@ void Controller::setup()
 	viewer = new Viewer();
 	setFrameRate(viewer->getFramesPerSecond());
 	setWindowSize(viewer->getWindowSize());
-	PlantVisual* p = new PlantVisual(CoordsInt(1, 1), std::vector<CoordsInt>({ CoordsInt(1, 0), CoordsInt(2, 0), CoordsInt(0, -1) }));
-	std::vector<PlantVisual*> ps = { p };
 	std::vector<IGardenEntityLogic*> pes = {
 		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(2, 2), Year(30))
 	};

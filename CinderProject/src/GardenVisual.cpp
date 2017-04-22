@@ -20,9 +20,7 @@ std::vector<PlantVisual*> GardenVisual::getPlants() const
 {
 	std::vector<PlantVisual*> out;
 	for (auto plant : logic->getEntities()){
-		CoordsInt seed = plant->getInitialPosition();
-		std::vector<CoordsInt> positions = plant->getCurrentState()->occupiedPositions();
-		out.push_back(new PlantVisual(seed, positions));
+		out.push_back(new PlantVisual((PlantLogic*)plant));
 	}
 	return out;
 }

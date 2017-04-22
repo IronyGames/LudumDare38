@@ -1,0 +1,30 @@
+My Small Garden
+Urban Garden
+
+A small number of tiles for gardening
+However you can go back and forward in time.
+Many of the levels require you to grow food.
+
+Tutorial level.
+Defend against critters.
+Make sure plants can grow together.
+Construct walls to keep plants appart so not all of them get infected.
+Grow a plant next to another so the fruits remain inmature.
+Rocks.
+
+
+First iteration
+Create a garden
+Create a timeline
+Create trees
+Create tree-growing logic.
+
+
+Second iteration
+Solve conflicts of trees growing on the same tile.
+From grown to full pixel tile > interpret growth artistically.
+DEBUG SLIDER
+
+Third iteration
+Level Manager
+Connect Visual and Logic

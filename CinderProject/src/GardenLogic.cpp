@@ -1,9 +1,18 @@
 #include "GardenLogic.h"
 #include "PlantLogic.h"
 
-GardenLogic::GardenLogic( GardenRules rules_ )
+GardenRules::GardenRules(Segment<Year> _timeline, unsigned _gardenWidth, unsigned _gardenHeight)
+: timeline(_timeline)
+, gardenWidth(_gardenWidth)
+, gardenHeight(_gardenHeight)
+{
+
+}
+
+GardenLogic::GardenLogic(GardenRules rules_, std::vector<IGardenEntityLogic*> _plants)
 	: rules( rules_ )
 	, currentState( rules_.timeline )
+	, plants(_plants)
 {}
 
 GardenLogic::Dimensions GardenLogic::getDimensions() const
@@ -24,6 +33,11 @@ void GardenLogic::updateGardenTo( Year year )
 
 		// Do stuff later
 	}
+}
+
+std::vector<IGardenEntityLogic*> GardenLogic::getEntities() const
+{
+	return plants;
 }
 
 GardenLogic::Dimensions::Dimensions( unsigned witdh_, unsigned height_ ) : witdh( witdh_ )

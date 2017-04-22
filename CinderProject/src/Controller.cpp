@@ -21,8 +21,8 @@ void Controller::setup()
 	std::vector<IGardenEntityLogic*> pes = {
 		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(2, 2), Year(30))
 	};
-	GardenLogic *gl = new GardenLogic(GardenRules(Segment<Year>(0,100,0), 4, 6), pes);
-	g = new GardenVisual(gl);
+	gardenLogic = new GardenLogic(GardenRules(Segment<Year>(0,100,0), 4, 6), pes);
+	g = new GardenVisual(gardenLogic);
 	
 	levelManager = new LevelManager();
 	inputController = new InputController( getWindow() );
@@ -37,6 +37,7 @@ void Controller::update()
 {
 	bool isConnected = levelManagerEventListenerConnection.isConnected();
 	int a = 0;
+	gardenLogic->updateGardenDelta(0.075);
 }
 
 void Controller::draw()

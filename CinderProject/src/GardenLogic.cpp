@@ -11,7 +11,6 @@ GardenRules::GardenRules(Segment<Year> _timeline, unsigned _gardenWidth, unsigne
 
 GardenLogic::GardenLogic(GardenRules rules_, std::vector<IGardenEntityLogic*> _plants)
 	: rules( rules_ )
-	, currentState( rules_.timeline )
 	, plants(_plants)
 {}
 
@@ -22,7 +21,7 @@ GardenLogic::Dimensions GardenLogic::getDimensions() const
 
 Segment<Year> GardenLogic::getCurrentTimeState() const
 {
-	return currentState;
+	return rules.timeline;
 }
 
 void GardenLogic::updateGardenDelta( Year year )

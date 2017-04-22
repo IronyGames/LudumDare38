@@ -114,14 +114,15 @@ void Viewer::render(GardenVisual *garden)
 void Viewer::renderGardenTimeline(GardenVisual *garden)
 {
 	cinderColor color = garden->getTimelineColor();
-	int startingX = timeLineMargin, endingX = windowSize.x - timeLineMargin;
+	int startingX = timeLineMargin, size = windowSize.x - timeLineMargin - startingX;
 	int markerWidth = timeLineHeight;
 
 	Segment<double> timeline = garden->getTimeline();
-	double timepixelRelation = (timeline.getMax() - timeline.getMin()) / (endingX - startingX);
+	int maxT = timeline.getMax(), minT = timeline.getMin();
+	double timepixelRelation = ((double)size) / ((double)maxT - (double)minT);
 	double pixelPresent = timepixelRelation * timeline.get();
 
-	renderTimeline(color, startingX, endingX, pixelPresent, markerWidth);
+	renderTimeline(color, startingX, size, pixelPresent, markerWidth);
 	renderPlantTimelines(garden->getPlants());
 }
 
@@ -185,12 +186,12 @@ void Viewer::renderTile(cinderColor tileColor)
 	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, tileSize, tileSize));
 }
 
-void Viewer::renderTimeline(cinderColor color, int startingX, int endingX, int markerX, int markerWidth)
+void Viewer::renderTimeline(cinderColor color, int startingX, int size, int markerX, int markerWidth)
 {
 	cinder::gl::pushMatrices();
 	cinder::gl::color(color);
-	cinder::gl::drawSolidRect(cinder::Rectf(startingX, 0, endingX, timeLineHeight));
 	cinder::gl::translate(startingX, 0);
+	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, size, timeLineHeight));
 	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, markerWidth, 3 * timeLineHeight));
 
 	cinder::gl::translate(markerX, 0);
@@ -198,7 +199,7 @@ void Viewer::renderTimeline(cinderColor color, int startingX, int endingX, int m
 	cinder::gl::popMatrices();
 
 	cinder::gl::pushMatrices();
-	cinder::gl::translate(endingX - markerWidth, 0);
+	cinder::gl::translate(startingX + size, 0);
 	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, markerWidth, 3 * timeLineHeight));
 	cinder::gl::popMatrices();
 }

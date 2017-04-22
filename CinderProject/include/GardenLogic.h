@@ -35,8 +35,7 @@ public:
 
 private:
 	GardenRules		rules;
-	Segment<Year>	currentState;
-
+	
 	std::map<CoordsInt, IGardenEntityLogic*> world;
 
 	std::vector<owner<IGardenEntityLogic>> plants;

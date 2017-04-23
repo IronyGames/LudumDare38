@@ -101,7 +101,7 @@ void Viewer::render(GardenVisual *garden)
 	renderGarden(garden);
 	std::vector<PlantVisual*> plants = garden->getPlants();
 	for (auto plant = plants.begin(); plant != plants.end(); plant++){
-		renderPlant(*plant, garden->getTileTranslation(), garden->getTileSize());
+		renderPlant(*plant, garden->getTileTranslation(), garden->getTileSize(), garden->getTimeline().get());
 	}
 	cinder::gl::popMatrices();
 
@@ -148,7 +148,7 @@ void Viewer::renderGardenTimeline(GardenVisual *garden)
 	cinder::gl::popMatrices();
 }
 
-void Viewer::renderPlant(PlantVisual *plant, int translation, int tileSize)
+void Viewer::renderPlant(PlantVisual *plant, int translation, int tileSize, double year)
 {
 	CoordsInt seedPosition = plant->getSeed();
 	std::vector<CoordsInt> grownTiles = plant->getGrownTiles();
@@ -164,14 +164,14 @@ void Viewer::renderPlant(PlantVisual *plant, int translation, int tileSize)
 		renderTile(plant->getPlantTile(growth), tileSize);
 		cinder::gl::popMatrices();
 	}
-	
+	cinder::gl::popMatrices();
 	cinder::gl::pushMatrices();
-	cinder::gl::translate( getTileTranslation( seedPosition ) );
+	cinder::gl::translate( translation * ( seedPosition ) );
 
 	const Year age = plant->getAge( year );
 	if(age > 0)
 	{
-		renderTile( plant->getSeedTile() );
+		renderTile( plant->getSeedTile(), tileSize );
 	}
 	cinder::gl::popMatrices();
 }
@@ -209,7 +209,6 @@ void Viewer::renderPlantTimelines(std::vector<PlantVisual*> plants, double timep
 		int size = plant->getMaxAge() * timepixelRelation;
 		int computedYear = (plantYears.get() - plantYears.getMin()) * timepixelRelation;
 		cinderColor color = plant->getTimelineColor();
-
 
 		renderTimeline(color, start, size, computedYear, timeLineHeight);
 		cinder::gl::translate(0, markerHeight + timeLineMargin);

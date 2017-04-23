@@ -18,7 +18,7 @@ GardenLogic::GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsign
 
 void GardenLogic::addEntityToMap(IGardenEntityLogic* entity_)
 {
-	for (CoordsInt coord : entity_->getCurrentState()->getOccupiedPositions())
+	for (CoordsInt coord : entity_->getOccupiedPositions())
 	{
 		assert(world.find(coord) == world.end());
 		world[coord] = entity_;

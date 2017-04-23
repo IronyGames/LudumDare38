@@ -30,7 +30,7 @@ void LevelManager::onLeftMouse( CoordsInt mousePosition )
 	if (clickedTile == CoordsInt(-1, -1)){
 		return;
 	}
-	PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), clickedTile);
+	PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), Year(200), clickedTile);
 	getGardenLogic()->addEntity(nextSeed);
 }
 

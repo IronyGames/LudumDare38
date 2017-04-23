@@ -18,7 +18,7 @@ private:
 	int framesPerSecond;
 	cinderColor* backgroundColor;
 	void render(PlantVisual *plant, Year year );
-	void renderTile(cinderColor tileColor);
+	void renderTile(cinderColor tileColor, int tileSize);
 	void renderGardenTimeline(GardenVisual *garden);
 	void renderGarden(GardenVisual *garden);
 	void render(std::vector<PlantVisual*> plants, Year year );
@@ -38,4 +38,5 @@ public:
 	void end();
 	void render(GardenVisual *garden);
 	CoordsInt getGardenRenderingOffset(GardenVisual *garden);
+	void renderPlant(PlantVisual *plant, int translation, int tileSize, double year);
 };

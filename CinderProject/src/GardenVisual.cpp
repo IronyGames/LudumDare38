@@ -3,13 +3,14 @@
 #include "IGardenEntityLogic.h"
 #include "IGardenEntityState.h"
 #include "PlantVisual.h"
+#include "ImageFlyweight.h"
 
-GardenVisual::GardenVisual(const GardenLogic *_logic)
-:m_logic(_logic)
+GardenVisual::GardenVisual(const GardenLogic *_logic, ImageFlyweight *_images) :m_logic(_logic)
 , m_soilColor(cinderColor(0.541, 0.302, 0.184))
 , m_timelineColor(cinderColor(0.9,0.9,0.9))
 , tileSize(30)
-, tileSeparator(10)
+, tileSeparator(0)
+, soilTexture(_images->get("../resources/soil.png"))
 {
 }
 
@@ -28,9 +29,9 @@ std::vector<PlantVisual*> GardenVisual::getPlants() const
 	return out;
 }
 
-cinderColor GardenVisual::getSoilTile(CoordsInt position) const
+Image GardenVisual::getSoilTile(CoordsInt position) const
 {
-	return m_soilColor;
+	return soilTexture;
 }
 
 Segment<Year> GardenVisual::getTimeline()

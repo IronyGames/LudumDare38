@@ -19,6 +19,7 @@ private:
 	cinderColor* backgroundColor;
 	void render(PlantVisual *plant, Year year );
 	void renderTile(cinderColor tileColor, int tileSize);
+	void renderTile(Image tileTexture, int tileSize);
 	void renderGardenTimeline(GardenVisual *garden);
 	void renderGarden(GardenVisual *garden);
 	void render(std::vector<PlantVisual*> plants, Year year );

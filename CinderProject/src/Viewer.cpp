@@ -177,6 +177,11 @@ void Viewer::renderTile(cinderColor tileColor, int tileSize)
 	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, tileSize, tileSize));
 }
 
+void Viewer::renderTile(Image tileTexture, int tileSize)
+{
+	cinder::gl::draw(tileTexture, cinder::Rectf(0, 0, tileSize, tileSize));
+}
+
 void Viewer::renderTimeline(cinderColor color, int startingX, int size, int markerX, int markerWidth)
 {
 	cinder::gl::pushMatrices();
@@ -220,6 +225,7 @@ CoordsInt Viewer::getGardenRenderingOffset(GardenVisual *garden)
 void Viewer::renderToWholeScreen(Image _image)
 {
 	cinder::gl::pushMatrices();
+	cinder::gl::color(1, 1, 1);
 	cinder::gl::scale(windowSize / _image->getSize());
 	cinder::gl::draw(_image);
 	cinder::gl::popMatrices();

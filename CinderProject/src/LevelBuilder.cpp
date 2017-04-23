@@ -13,7 +13,7 @@ std::vector<Level> LevelBuilder::LoadLevels( std::string path )
 
 	for(const auto& levelData : levelsData)
 	{
-		const GardenInitializationData& gardenInitializationData = levelData.gardenRules;
+		const GardenInitializationData& gardenInitializationData = levelData.gardenInitializationData;
 
 		std::vector<IGardenEntityLogic*> gardenObjects;
 		for(const auto& kv : gardenInitializationData.initialEntities)

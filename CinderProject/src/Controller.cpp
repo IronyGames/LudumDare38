@@ -23,7 +23,7 @@ void Controller::setup()
 	setWindowSize(viewer->getWindowSize());
 
 	LevelBuilder levelBuilder;
-	std::vector<Level> levels = levelBuilder.LoadLevels("path");
+	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json");
 
 	levelManager = new LevelManager( std::move(levels) );
 	inputController = new InputController( getWindow() );

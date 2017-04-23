@@ -1,35 +1,82 @@
 #include "LevelLoader.h"
+#include "GameFileLoader.h"
 
 std::vector<LevelData> LevelLoader::LoadLevelData( std::string path )
 {
-	LevelData levelData;
+	std::vector<LevelData> levelsData;
 
-	levelData.gardenRules.gardenHeight = 13;
-	levelData.gardenRules.gardenWidth = 13;
-	levelData.gardenRules.timeline = Segment<Year>( 1, 2000, 499 );
+	CinderJson jsonLevels = getJsonData( path );
+	
+	for (const CinderJson& level : jsonLevels.getChild("levels"))
+	{
+		LevelData levelData;
 
-	GardenInitializationData::Entity plant;
-	plant.name = "plant_1";
-	plant.seedYear = 500;
-	levelData.gardenRules.initialEntities[CoordsInt( 3, 3 )] = plant;
+		levelData.gardenInitializationData.gardenWidth = level.getValueForKey<int>( "width" );
+		levelData.gardenInitializationData.gardenHeight = level.getValueForKey<int>( "height" );
 
-	PlantData plantData;
-	plantData.pattern.lifeRange = Segment<Year>( 0, 200, 0 );
+		const Year maxTime = level.getValueForKey<int>( "max_time" );
+		const Year currentTime = level.getValueForKey<int>( "current_time" );
 
-	GardenEntityPattern::PatternNode pattern1;
-	pattern1.year = 0;
-	pattern1.relativePositions = {CoordsInt( 0,0 )};
+		levelData.gardenInitializationData.timeline = Segment<Year>( 0, maxTime, currentTime );
 
-	GardenEntityPattern::PatternNode pattern2;
-	pattern2.year = 100;
-	pattern2.relativePositions = {CoordsInt( 0,0 ), CoordsInt( 0,1 ), CoordsInt( 1,0 ), CoordsInt( 1,1 )};
+		for ( const CinderJson& initialPlantsJson : level.getChild("initial_plants") )
+		{
+			GardenInitializationData::Entity plant;
+			plant.name = initialPlantsJson.getValueForKey<std::string>( "plant_type" );
+			plant.seedYear = initialPlantsJson.getValueForKey<int>( "seed_year" );
 
-	GardenEntityPattern::PatternNode pattern3;
-	pattern3.year = 200;
-	pattern3.relativePositions = {CoordsInt( 0,0 ), CoordsInt( 0,1 ), CoordsInt( 1,0 ), CoordsInt( 1,1 ), CoordsInt( 2,1 ), CoordsInt( 2,2 ), CoordsInt( 1,2 )};
+			CoordsInt coord = getCoordFrom( initialPlantsJson.getChild("coord") );
+			levelData.gardenInitializationData.initialEntities[coord] = plant;
+		}
 
-	plantData.pattern.treePatterns = std::set<GardenEntityPattern::PatternNode>( {pattern1, pattern2, pattern3} );
-	levelData.plantTypes["plant_1"] = plantData;
+		for(const CinderJson& plantJson : level.getChild( "plants" ))
+		{
+			PlantData plantData;
+			std::string name = plantJson.getValueForKey<std::string>( "name" );
 
-	return{levelData};
+			for (const CinderJson& patternJson : plantJson.getChild("pattern") )
+			{
+				GardenEntityPattern::PatternNode pattern;
+				pattern.year = patternJson.getValueForKey<int>( "year" );
+				pattern.relativePositions = getListCoordFrom( patternJson.getChild( "coords" ) );
+
+				plantData.pattern.treePatterns.emplace( pattern );
+			}
+
+			plantData.pattern.lifeRange = Segment<Year>( 0, plantJson.getValueForKey<int>("lifeRange"), 0 );
+
+			levelData.plantTypes.emplace(name, plantData);
+		}
+
+		levelsData.emplace_back(levelData);
+	}
+
+	return levelsData;
+}
+
+CoordsInt LevelLoader::getCoordFrom( const CinderJson& json )
+{
+	CoordsInt coord;
+	assert(json.getNumChildren() == 2);
+
+	coord.x = json.getValueAtIndex<int>( 0 );
+	coord.y = json.getValueAtIndex<int>( 1 );
+
+	return coord;
+}
+
+std::vector<CoordsInt> LevelLoader::getListCoordFrom( const CinderJson& json )
+{
+	std::vector<CoordsInt> coords;
+	for (auto it = json.begin(); it != json.end();)
+	{
+		const int x = it->getValue<int>();
+		++it;
+		const int y = it->getValue<int>();
+		++it;
+		
+		coords.emplace_back(CoordsInt(x, y));
+	}
+
+	return coords;
 }

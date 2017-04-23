@@ -1,9 +1,12 @@
 #pragma once
 #include "GardenEntityPattern.h"
 #include "GardenInitializationData.h"
+#include "GameFileLoader.h"
+
 #include <map>
 #include <string>
 #include <vector>
+
 
 class PlantData
 {
@@ -14,12 +17,16 @@ public:
 class LevelData
 {
 public:
-	GardenInitializationData	gardenRules;
+	GardenInitializationData	gardenInitializationData;
 	std::map<std::string, PlantData> plantTypes;
 };
 
-class LevelLoader
+class LevelLoader : public GameFileLoader
 {
 public:
 	std::vector<LevelData> LoadLevelData( std::string path );
+
+private:
+	static CoordsInt getCoordFrom( const CinderJson& json );
+	static std::vector<CoordsInt> getListCoordFrom( const CinderJson& json );
 };

@@ -5,6 +5,6 @@ class GameFileLoader{
 public:
 	GameFileLoader();
 protected:
-	CinderJson* getJsonData(String _filePath);
+	CinderJson getJsonData(String _filePath);
 	CinderDataSource getFile(String _filePath);
 };

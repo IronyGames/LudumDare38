@@ -4,12 +4,14 @@ GameFileLoader::GameFileLoader()
 {
 }
 
-CinderJson* GameFileLoader::getJsonData(String _filePath)
+CinderJson GameFileLoader::getJsonData(String _filePath)
 {
-	return new CinderJson(getFile(_filePath));
+	return CinderJson(getFile(_filePath));
 }
 
 CinderDataSource GameFileLoader::getFile(String _filePath)
 {
-	return cinder::loadFile(_filePath);
+	CinderDataSource dataSource = cinder::loadFile( _filePath );
+	assert( dataSource != nullptr );
+	return dataSource;
 }

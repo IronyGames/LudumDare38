@@ -2,6 +2,7 @@
 
 #include "Typedef.h"
 #include "Segment.h"
+#include "boost/optional/optional.hpp"
 
 class IGardenEntityState;
 
@@ -22,6 +23,8 @@ public:
 	virtual Year			getSeedYear() const = 0;
 	virtual Year			getAge( Year currentYear ) const = 0;
 	virtual std::vector<CoordsInt> getOccupiedPositions() const = 0;
+	
+	virtual std::string		getType() const = 0;
 
 	virtual void setCurrentState( Year age, std::vector<CoordsInt> occupiedPositions ) = 0;
 };

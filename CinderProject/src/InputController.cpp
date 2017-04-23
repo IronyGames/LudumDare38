@@ -41,6 +41,8 @@ InputController::InputController( cinder::app::WindowRef window_ )
 				emit(&EventListener::onRightMouse, mouseEvent.getPos());
 			}
 		});
+
+	onWindowSizeChange( window->getSize().x, window->getSize().y );
 }
 
 void InputController::RegisterEventListener( EventListener* listener )
@@ -55,4 +57,22 @@ void InputController::UnregisterEventListener( EventListener* listener )
 	{
 		listeners.erase(it);
 	}
+}
+
+void InputController::onWorldDimensionsChange( unsigned total_pixel_width_, unsigned total_pixel_height_ )
+{
+	worldWidthInPixels = total_pixel_width_;
+	worldHeightInPixels = total_pixel_height_;
+}
+
+void InputController::onLevelGridChanged( unsigned width_, unsigned height_ )
+{
+	gardenWidthDimension = width_;
+	gardenHeightDimension = height_;
+}
+
+void InputController::onWindowSizeChange( unsigned width_, unsigned height_ )
+{
+	totalWidthInPixels = width_;
+	totalHeightInPixels = height_;
 }

@@ -8,14 +8,21 @@
         "initial_plants":[
           {
             "coord": [ 3, 3 ],
-			"seed_year": 500,
+            "seed_year": 500,
             "plant_type" : "plant_1"
+          }
+        ],
+        "goal":[
+          {
+            "seed": [3,3],
+            "coords": [3,3, 3,4, 4,3, 4,4, 5,4, 5,5, 4,5 ],
+            "type": "plant_1"
           }
         ],
         "plants": [
           {
             "name": "plant_1",
-			"lifeRange": 300,
+            "lifeRange": 300,
 
             "pattern": [
               {

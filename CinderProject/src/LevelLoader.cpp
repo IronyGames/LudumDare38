@@ -1,6 +1,8 @@
 #include "LevelLoader.h"
 #include "GameFileLoader.h"
 
+#include "boost/none.hpp"
+
 std::vector<LevelData> LevelLoader::LoadLevelData( std::string path )
 {
 	std::vector<LevelData> levelsData;
@@ -46,6 +48,19 @@ std::vector<LevelData> LevelLoader::LoadLevelData( std::string path )
 			plantData.pattern.lifeRange = Segment<Year>( 0, plantJson.getValueForKey<int>("lifeRange"), 0 );
 
 			levelData.plantTypes.emplace(name, plantData);
+		}
+
+		for ( const CinderJson& goalJson : level.getChild( "goal" ) )
+		{
+			GoalData goalData;
+			goalData.type = goalJson.getValueForKey("type");
+			goalData.occupiedPositions = getListCoordFrom( goalJson.getChild("coords") );
+			if (goalJson.hasChild( "seed" ))
+			{
+				goalData.seedPos = getCoordFrom( goalJson.getChild( "seed" ) );
+			}
+			
+			levelData.goals.emplace_back( goalData );
 		}
 
 		levelsData.emplace_back(levelData);

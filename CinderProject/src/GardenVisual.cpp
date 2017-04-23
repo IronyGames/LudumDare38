@@ -8,6 +8,8 @@ GardenVisual::GardenVisual(const GardenLogic *_logic)
 :m_logic(_logic)
 , m_soilColor(cinderColor(0.541, 0.302, 0.184))
 , m_timelineColor(cinderColor(0.9,0.9,0.9))
+, tileSize(30)
+, tileSeparator(3)
 {
 }
 
@@ -38,4 +40,21 @@ Segment<Year> GardenVisual::getTimeline()
 
 cinderColor GardenVisual::getTimelineColor() const {
 	return m_timelineColor;
+}
+
+int GardenVisual::getTileSize() const {
+	return tileSize;
+}
+int GardenVisual::getTileSeparator() const {
+	return tileSeparator;
+}
+
+DimensionsInt GardenVisual::getGardenPixelSize()
+{
+	return getGardenSize() * getTileTranslation() - tileSeparator;
+}
+
+int GardenVisual::getTileTranslation()
+{
+	return tileSize + tileSeparator;
 }

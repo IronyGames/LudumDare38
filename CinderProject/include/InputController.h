@@ -11,6 +11,10 @@ public:
 
 private:
 	virtual void onTimeChanged( Year deltaYear ) = 0;
+// 	virtual void onRewindTime() = 0;
+// 	virtual void onForwardTime() = 0;
+	virtual void onLeftMouse(CoordsInt mousePosition) = 0;
+	virtual void onRightMouse(CoordsInt mousePosition) = 0;
 };
 
 class InputController
@@ -28,6 +32,7 @@ private:
 
 	cinder::app::WindowRef window;
 	cinder::signals::ScopedConnection m_onKeyPressedConnection;
+	cinder::signals::ScopedConnection m_onMouseClickConnection;
 
 	std::vector<EventListener*> listeners;
 };

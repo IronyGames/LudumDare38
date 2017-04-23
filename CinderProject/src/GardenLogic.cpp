@@ -12,11 +12,16 @@ GardenLogic::GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsign
 {
 	for (IGardenEntityLogic* entity : entities )
 	{
-		for (CoordsInt coord : entity->getCurrentState()->getOccupiedPositions() )
-		{
-			assert( world.find(coord) == world.end() );
-			world[coord] = entity;
-		}
+		addEntityToMap(entity);
+	}
+}
+
+void GardenLogic::addEntityToMap(IGardenEntityLogic* entity_)
+{
+	for (CoordsInt coord : entity_->getCurrentState()->getOccupiedPositions())
+	{
+		assert(world.find(coord) == world.end());
+		world[coord] = entity_;
 	}
 }
 
@@ -44,6 +49,38 @@ void GardenLogic::updateGardenDelta( Year year )
 std::vector<IGardenEntityLogic*> GardenLogic::getEntities() const
 {
 	return entities;
+}
+
+void GardenLogic::addEntity(IGardenEntityLogic* entity_)
+{
+	for (int i = 0; i < entities.size(); i++){
+		if (entity_->getPosition() == getEntities().at(i)->getPosition()){
+			return;
+		}
+	}
+	entities.emplace_back(entity_);
+	addEntityToMap(entity_);
+}
+
+void GardenLogic::unPlant(CoordsInt tile)
+{
+	IGardenEntityLogic* plant = getEntity(tile);
+	if (plant == nullptr){ 
+		return; 
+		
+	}
+	entities.erase(std::remove(entities.begin(), entities.end(), plant), entities.end());
+	delete plant;
+}
+
+IGardenEntityLogic* GardenLogic::getEntity(CoordsInt origin)
+{
+	for (IGardenEntityLogic* entity : entities){
+		if (entity->getPosition() == origin){
+			return entity;
+		}
+	}
+	return nullptr;
 }
 
 GardenLogic::Dimensions::Dimensions( unsigned witdh_, unsigned height_ ) : witdh( witdh_ )

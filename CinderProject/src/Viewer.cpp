@@ -13,8 +13,6 @@ Viewer::Viewer()
 , zoom(1.0)
 , framesPerSecond(60)
 , backgroundColor(new cinderColor(0.216, 0.353, 0.486))
-, tileSize(30)
-, tileSeparator(2)
 , timeLineHeight(5)
 , timeLineMargin(10)
 , markerHeight(15)
@@ -97,12 +95,16 @@ void Viewer::end()
 void Viewer::render(GardenVisual *garden)
 {
 	DimensionsInt size = garden->getGardenSize();
-	DimensionsInt halfSize = getGardenSize(size);
+	DimensionsInt halfSize = garden->getGardenPixelSize();
 	
 	cinder::gl::pushMatrices();
 	cinder::gl::translate((windowSize - halfSize).x / 2, (windowSize - halfSize).y / 3);
 	renderGarden(garden);
-	render(garden->getPlants());
+
+	std::vector<PlantVisual*> plants = garden->getPlants();
+	for (auto plant = plants.begin(); plant != plants.end(); plant++){
+		renderPlant(*plant, garden->getTileTranslation(), garden->getTileSize());
+	}
 	cinder::gl::popMatrices();
 
 	cinder::gl::pushMatrices();
@@ -114,13 +116,13 @@ void Viewer::render(GardenVisual *garden)
 void Viewer::renderGarden(GardenVisual *garden)
 {
 	DimensionsInt size = garden->getGardenSize();
-	int translation = tileSize + tileSeparator;
+	int translation = garden->getTileSize() + garden->getTileSeparator();
 
 	cinder::gl::pushMatrices();
 	for (int r = 0; r < size.y; r++){
 		cinder::gl::pushMatrices();
 		for (int c = 0; c < size.x; c++){
-			renderTile(garden->getSoilTile(CoordsInt(c, r)));
+			renderTile(garden->getSoilTile(CoordsInt(c, r)), garden->getTileSize());
 			cinder::gl::translate(translation, 0, 0);
 		}
 		cinder::gl::popMatrices();
@@ -148,43 +150,26 @@ void Viewer::renderGardenTimeline(GardenVisual *garden)
 	cinder::gl::popMatrices();
 }
 
-void Viewer::render(PlantVisual *plant)
+void Viewer::renderPlant(PlantVisual *plant, int translation, int tileSize)
 {
 	CoordsInt seedPosition = plant->getSeed();
 	std::vector<CoordsInt> grownTiles = plant->getGrownTiles();
 	
 	cinder::gl::pushMatrices();
-	cinder::gl::translate(getTileTranslation(seedPosition));
-	renderTile(plant->getSeedTile());
+	cinder::gl::translate(translation*(seedPosition));
+	renderTile(plant->getSeedTile(), tileSize);
 
 	for (auto growth : grownTiles ){
 		cinder::gl::pushMatrices();
-		CoordsInt translation = getTileTranslation(growth);
+		CoordsInt translation = translation*(growth);
 		cinder::gl::translate(translation);
-		renderTile(plant->getPlantTile(growth));
+		renderTile(plant->getPlantTile(growth), tileSize);
 		cinder::gl::popMatrices();
 	}
 	cinder::gl::popMatrices();
 }
 
-void Viewer::render(std::vector<PlantVisual*> plants)
-{
-	for (auto plant = plants.begin(); plant != plants.end(); plant++){
-		render(*plant);
-	}
-}
-
-CoordsInt Viewer::getTileTranslation(CoordsInt tile)
-{
-	return tile * (tileSize + tileSeparator);
-}
-
-DimensionsInt Viewer::getGardenSize(DimensionsInt size)
-{
-	return getTileTranslation(size) - tileSeparator;
-}
-
-void Viewer::renderTile(cinderColor tileColor)
+void Viewer::renderTile(cinderColor tileColor, int tileSize)
 {
 	cinder::gl::color(tileColor);
 	cinder::gl::drawSolidRect(cinder::Rectf(0, 0, tileSize, tileSize));

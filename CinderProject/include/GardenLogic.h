@@ -12,6 +12,9 @@ class GardenLogic
 public:
 	GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsigned gardenHeight_, std::vector<IGardenEntityLogic*> entities_ );
 
+	void addEntity(IGardenEntityLogic* entity_);
+	void unPlant(CoordsInt tile);
+
 	struct Dimensions
 	{
 		Dimensions( unsigned witdh_, unsigned height_ );
@@ -29,8 +32,9 @@ public:
 private:
 	const Dimensions	dimensions;
 	Segment<Year>		timeline;
-	
 
+	void addEntityToMap(IGardenEntityLogic* entity_);
+	IGardenEntityLogic* getEntity(CoordsInt origin);
 	std::unordered_map<CoordsInt, IGardenEntityLogic*> world;
 
 	std::vector<IGardenEntityLogic*> entities;

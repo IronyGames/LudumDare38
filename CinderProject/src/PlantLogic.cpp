@@ -105,7 +105,7 @@ PlantLogic::CalculateStateResult PlantLogic::calculateStateTo( Year year, Year d
 
 	CoordsInt initialPos = getPosition();
 	std::vector<CoordsInt> o = getOccupiedPositions();
-	std::unordered_set<CoordsInt> occupiedPositions( o.begin(), o.end() );
+	std::unordered_set<CoordsInt> occupiedPositions;//( o.begin(), o.end() );
 
 	for ( CoordsInt relativePos : node.relativePositions)
 	{

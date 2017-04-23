@@ -12,7 +12,7 @@ public:
 
 	struct CalculateStateResult
 	{
-		Year age;
+		Year age = 0;
 		std::vector<CoordsInt> occupiedPositions;
 	};
 	virtual CalculateStateResult calculateStateTo( Year year, Year deltaYear ) const = 0;

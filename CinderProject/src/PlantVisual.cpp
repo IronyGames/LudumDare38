@@ -31,7 +31,7 @@ cinderColor PlantVisual::getSeedTile()
 
 double PlantVisual::getSeedYear()
 {
-	return m_logic->getTimeLine().getMin();
+	return m_logic->getSeedYear();
 }
 
 cinderColor PlantVisual::getTimelineColor()

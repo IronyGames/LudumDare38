@@ -153,21 +153,16 @@ void Viewer::renderPlant(PlantVisual *plant, int translation, int tileSize, doub
 	CoordsInt seedPosition = plant->getSeed();
 	std::vector<CoordsInt> grownTiles = plant->getGrownTiles();
 	
-	cinder::gl::pushMatrices();
-	cinder::gl::translate(translation*(seedPosition));
-	renderTile(plant->getSeedTile(), tileSize);
-
 	for (auto growth : grownTiles ){
 		cinder::gl::pushMatrices();
-		CoordsInt translation = translation*(growth);
-		cinder::gl::translate(translation);
+		CoordsInt pixelTranslation = translation*(growth);
+		cinder::gl::translate(pixelTranslation);
 		renderTile(plant->getPlantTile(growth), tileSize);
 		cinder::gl::popMatrices();
 	}
-	cinder::gl::popMatrices();
+
 	cinder::gl::pushMatrices();
 	cinder::gl::translate( translation * ( seedPosition ) );
-
 	const Year age = plant->getAge( year );
 	if(age > 0)
 	{

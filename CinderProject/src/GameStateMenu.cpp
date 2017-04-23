@@ -12,7 +12,7 @@ GameStateMenu::GameStateMenu(ImageFlyweight *_images, FontFactory *_fonts, Input
 , hasClicked(false)
 , input(_input)
 {
-	input->Dispatcher<InputEventListener>::RegisterListener(this);
+
 	deactivate();
 }
 
@@ -40,15 +40,16 @@ void GameStateMenu::onAnyKey()
 
 GameStateMenu::~GameStateMenu()
 {
-	input->Dispatcher<InputEventListener>::UnregisterListener(this);
 }
 
 void GameStateMenu::activate()
 {
+	input->Dispatcher<InputEventListener>::RegisterListener( this );
 	isActive = true;
 }
 
 void GameStateMenu::deactivate()
 {
+	input->Dispatcher<InputEventListener>::UnregisterListener( this );
 	isActive = false;
 }

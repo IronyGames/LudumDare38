@@ -41,6 +41,48 @@
             ]
           }
         ]
+      },
+      {
+        "width" : 13,
+        "height" : 13,
+        "max_time": 2000,
+        "current_time" : 499,
+        "initial_plants":[
+          {
+            "coord": [ 3, 3 ],
+            "seed_year": 500,
+            "plant_type" : "plant_1"
+          }
+        ],
+        "goal":[
+          {
+            "seed": [3,3],
+            "coords": [3,3, 3,4, 4,3, 4,4, 5,4, 5,5, 4,5 ],
+            "type": "plant_1"
+          }
+        ],
+        "plants": [
+          {
+            "name": "plant_1",
+            "lifeRange": 300,
+            "inventory_count": 1,
+
+            "pattern": [
+              {
+                "year": 0,
+                "coords": [0,0]
+              },
+              {
+                "year": 100,
+                "coords": [0,0, 0,1, 1,0, 1,1]
+              },
+              {
+                "year": 200,
+                "coords": [0,0, 0,1, 1,0, 1,1, 2,1, 2,2, 1,2 ]
+              }
+            ]
+          }
+        ]
       }
     ]
 }

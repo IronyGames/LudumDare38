@@ -11,6 +11,15 @@ LevelManager::LevelManager(std::vector<Level> levels_ )
 	selectLevel(0);
 }
 
+LevelManager::~LevelManager()
+{
+}
+
+cinder::signals::Connection LevelManager::doOnLevelCompleted( std::function<void( int )> onLevelCompleted )
+{
+	return onLevelCompleteSignal.connect( onLevelCompleted );
+}
+
 GardenVisual* LevelManager::getGardenVisual() const
 {
 	return levels[currentLevel].getGardenVisual();
@@ -31,13 +40,26 @@ void LevelManager::selectLevel( unsigned level )
 	currentLevel = level;
 }
 
+int LevelManager::getTotalLevelCount() const
+{
+	return levels.size();
+}
+
+int LevelManager::getCurrentLevel() const
+{
+	return currentLevel;
+}
+
 void LevelManager::onTimeChanged( Year deltaYear )
 {
 	GardenLogic* gardenLogic = getGardenLogic();
 	gardenLogic->updateGardenDelta(deltaYear);
 
 	GardenLogic::EvaluateGoalResult result = gardenLogic->evaluateGoal();
-	assert( result.haveWon == false ); // oh now, you won
+	if (result.haveWon)
+	{
+		onLevelCompleteSignal.emit( currentLevel );
+	}
 }
 
 void LevelManager::onAddEntity( CoordsInt tile )

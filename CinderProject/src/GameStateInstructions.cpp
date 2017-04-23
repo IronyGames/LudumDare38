@@ -11,7 +11,6 @@ GameStateInstructions::GameStateInstructions(ImageFlyweight *_images, FontFactor
 , hasClicked(false)
 , input(_input)
 {
-	input->Dispatcher<InputEventListener>::RegisterListener(this);
 	deactivate();
 }
 
@@ -57,15 +56,17 @@ void GameStateInstructions::renderTextLine(String text, int height)
 
 GameStateInstructions::~GameStateInstructions()
 {
-	input->Dispatcher<InputEventListener>::UnregisterListener(this);
+	
 }
 
 void GameStateInstructions::activate()
 {
+	input->Dispatcher<InputEventListener>::RegisterListener( this );
 	isActive = true;
 }
 
 void GameStateInstructions::deactivate()
 {
+	input->Dispatcher<InputEventListener>::UnregisterListener( this );
 	isActive = false;
 }

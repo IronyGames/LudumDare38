@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Typedef.h"
+#include "Segment.h"
 
 class IGardenEntityState;
 
@@ -15,9 +16,9 @@ public:
 	};
 	virtual CalculateStateResult calculateStateTo( Year year ) const = 0;
 
-	virtual CoordsInt getInitialPosition() const = 0;
-	virtual Year getSeedYear() const = 0;
-
+	virtual CoordsInt getPosition() const = 0;
+	virtual Segment<Year> getCurrentLife() const = 0;
+	virtual Year getAge() const = 0;
 
 
 	virtual const IGardenEntityState* getCurrentState() const = 0;

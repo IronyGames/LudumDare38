@@ -5,9 +5,11 @@
 
 class EventListener
 {
+	friend class InputController;
 public:
 	virtual ~EventListener() = default;
 
+private:
 	virtual void onTimeChanged( Year deltaYear ) = 0;
 };
 

@@ -3,21 +3,14 @@
 #include "Typedef.h"
 #include "Segment.h"
 
+#include <unordered_map>
+
 class IGardenEntityLogic;
-
-struct GardenRules
-{
-	GardenRules(Segment<Year> _timeline, unsigned _gardenWidth, unsigned _gardenHeight);
-	Segment<Year> timeline;
-
-	unsigned gardenWidth = 0;
-	unsigned gardenHeight = 0;
-};
 
 class GardenLogic
 {
 public:
-	GardenLogic(GardenRules rules_, std::vector<IGardenEntityLogic*> _plants);
+	GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsigned gardenHeight_, std::vector<IGardenEntityLogic*> entities_ );
 
 	struct Dimensions
 	{
@@ -34,9 +27,11 @@ public:
 	void updateGardenDelta( Year year );
 
 private:
-	GardenRules		rules;
+	const Dimensions	dimensions;
+	Segment<Year>		timeline;
 	
-	std::map<CoordsInt, IGardenEntityLogic*> world;
 
-	std::vector<owner<IGardenEntityLogic>> plants;
+	std::unordered_map<CoordsInt, IGardenEntityLogic*> world;
+
+	std::vector<IGardenEntityLogic*> entities;
 };

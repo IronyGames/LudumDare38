@@ -1,27 +1,33 @@
 #include "GardenLogic.h"
 #include "PlantLogic.h"
+#include "IGardenEntityLogic.h"
+#include "IGardenEntityState.h"
 
-GardenRules::GardenRules(Segment<Year> _timeline, unsigned _gardenWidth, unsigned _gardenHeight)
-: timeline(_timeline)
-, gardenWidth(_gardenWidth)
-, gardenHeight(_gardenHeight)
+#include <cassert>
+
+GardenLogic::GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsigned gardenHeight_, std::vector<IGardenEntityLogic*> entities_ )
+	: timeline( timeline_ )
+	, dimensions( gardenWidth_, gardenHeight_ )
+	, entities(std::move( entities_ ))
 {
-
+	for (IGardenEntityLogic* entity : entities )
+	{
+		for (CoordsInt coord : entity->getCurrentState()->getOccupiedPositions() )
+		{
+			assert( world.find(coord) == world.end() );
+			world[coord] = entity;
+		}
+	}
 }
-
-GardenLogic::GardenLogic(GardenRules rules_, std::vector<IGardenEntityLogic*> _plants)
-	: rules( rules_ )
-	, plants(_plants)
-{}
 
 GardenLogic::Dimensions GardenLogic::getDimensions() const
 {
-	return Dimensions(rules.gardenWidth, rules.gardenHeight);
+	return dimensions;
 }
 
 Segment<Year> GardenLogic::getCurrentTimeState() const
 {
-	return rules.timeline;
+	return timeline;
 }
 
 void GardenLogic::updateGardenDelta( Year year )
@@ -37,7 +43,7 @@ void GardenLogic::updateGardenDelta( Year year )
 
 std::vector<IGardenEntityLogic*> GardenLogic::getEntities() const
 {
-	return plants;
+	return entities;
 }
 
 GardenLogic::Dimensions::Dimensions( unsigned witdh_, unsigned height_ ) : witdh( witdh_ )

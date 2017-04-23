@@ -16,7 +16,9 @@ CoordsInt PlantVisual::getSeed() const {
 }
 
 std::vector<CoordsInt> PlantVisual::getGrownTiles() const {
-	return m_logic->getCurrentState()->occupiedPositions();
+	return CoordsInt();
+	//TODO: david: check this
+	//TODO: return logic->getLifeExpectancy();
 }
 
 cinderColor PlantVisual::getPlantTile(CoordsInt tile)

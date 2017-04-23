@@ -4,10 +4,13 @@
 #include "Viewer.h"
 #include "GardenVisual.h"
 #include "PlantVisual.h"
+#include "LevelManager.h"
+#include "InputController.h"
 #include "GardenLogic.h"
 #include "PlantLogic.h"
 #include "LevelManager.h"
 #include "InputController.h"
+#include "LevelBuilder.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -27,6 +30,11 @@ void Controller::setup()
 	g = new GardenVisual(gardenLogic);
 	
 	levelManager = new LevelManager();
+
+	LevelBuilder levelBuilder;
+	std::vector<Level> levels = levelBuilder.LoadLevels("path");
+
+	levelManager = new LevelManager( std::move(levels) );
 	inputController = new InputController( getWindow() );
 	levelManagerEventListenerConnection = inputController->RegisterEventListener( levelManager );
 }
@@ -45,7 +53,7 @@ void Controller::update()
 void Controller::draw()
 {
 	viewer->begin();
-	viewer->render(g);
+	viewer->render( levelManager->getGardenVisual());
 	viewer->end();
 }
 

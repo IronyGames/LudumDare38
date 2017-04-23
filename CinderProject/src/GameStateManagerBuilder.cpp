@@ -22,9 +22,10 @@ GameStateManager* GameStateManagerBuilder::build()
 	std::map<String, IGameState*> states;
 	states["menu"] = new GameStateMenu(images, fonts, input, viewer);
 	states["instructions"] = new GameStateInstructions(images, fonts, input, viewer);
-	/*	states["game"] = new GameStateGame(images, fonts);
-	states["win"] = new GameStateEnd(images, fonts);*/
+	states["game"] = new GameStateGame(images, fonts, input, viewer);
+	states["win"] = new GameStateEnd(images, fonts, input, viewer);
 
 	//return new GameStateManager(states, "menu");
-	return new GameStateManager(states, "instructions");
+	return new GameStateManager(states, "game"); //debug
+	
 }

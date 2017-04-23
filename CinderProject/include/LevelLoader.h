@@ -6,19 +6,30 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "boost/optional/optional.hpp"
 
+
+class GoalData
+{
+public:
+	boost::optional<CoordsInt>	seedPos;
+	std::vector<CoordsInt>		occupiedPositions;
+	std::string					type;
+};
 
 class PlantData
 {
 public:
 	GardenEntityPattern	pattern;
+	unsigned inventoryCount = 0;
 };
 
 class LevelData
 {
 public:
-	GardenInitializationData	gardenInitializationData;
-	std::map<std::string, PlantData> plantTypes;
+	GardenInitializationData			gardenInitializationData;
+	std::map<std::string, PlantData>	plantTypes;
+	std::vector<GoalData>				goals;
 };
 
 class LevelLoader : public GameFileLoader

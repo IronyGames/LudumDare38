@@ -43,11 +43,11 @@ public:
 	CoordsInt seedPosition;
 };
 
-PlantLogic::PlantLogic( GardenEntityPattern pattern_, Year seedTime, Year age_, CoordsInt pos_ )
-	: gardenEntityPattern(pattern_)
+PlantLogic::PlantLogic( EntityDef plantDef_, Year seedTime, Year age_, CoordsInt pos_ )
+	: plantDef(plantDef_)
 	, state( new PlantLogicState( seedTime ) )
 {
-	state->plantTimeline = Segment<Year>(gardenEntityPattern.lifeRange.getMin(), gardenEntityPattern.lifeRange.getMax(), age_);
+	state->plantTimeline = Segment<Year>( plantDef.gardenEntityPattern.lifeRange.getMin(), plantDef.gardenEntityPattern.lifeRange.getMax(), age_);
 	state->seedPosition = pos_;
 }
 
@@ -87,12 +87,27 @@ Year PlantLogic::getAge( Year currentYear ) const
 	return state->getAge( currentYear );
 }
 
+std::string PlantLogic::getType() const
+{
+	return plantDef.type;
+}
+
+bool PlantLogic::isStatic() const
+{
+	return plantDef.isStatic;
+}
+
+EntityDef PlantLogic::getEntityDef() const
+{
+	return plantDef;
+}
+
 PlantLogic::CalculateStateResult PlantLogic::calculateStateTo( Year year, Year deltaYear ) const
 {
 	const Segment<Year> validTime( getSeedYear() + getTimeLine().getMin(), getSeedYear() + getTimeLine().getMax(), year );
 	Year age = getAge( year ) + deltaYear;
 
-	if (year < validTime.getMin() || age <= 0)
+	if (year < validTime.getMin() || age < 0)
 	{
 		return CalculateStateResult();
 	}
@@ -101,7 +116,7 @@ PlantLogic::CalculateStateResult PlantLogic::calculateStateTo( Year year, Year d
 
 	result.age = age;
 	
-	const auto& node = gardenEntityPattern.getFirstNodeInSegmentFrom( age );
+	const auto& node = plantDef.gardenEntityPattern.getFirstNodeInSegmentFrom( age );
 
 	CoordsInt initialPos = getPosition();
 	std::vector<CoordsInt> o = getOccupiedPositions();

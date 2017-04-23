@@ -3,10 +3,13 @@
 #include "GardenVisual.h"
 #include "PlantLogic.h"
 #include "PlantVisual.h"
-#include "Viewer.h"
+#include "InventoryLogic.h"
 
-LevelManager::LevelManager(std::vector<Level> levels_, Viewer *_viewer) : levels(std::move(levels_)), viewer(_viewer)
-{}
+LevelManager::LevelManager(std::vector<Level> levels_ )
+	: levels(std::move(levels_))
+{
+	selectLevel(0);
+}
 
 GardenVisual* LevelManager::getGardenVisual() const
 {
@@ -18,42 +21,45 @@ GardenLogic* LevelManager::getGardenLogic() const
 	return levels[currentLevel].getGardenLogic();
 }
 
+InventoryLogic* LevelManager::getInventory() const
+{
+	return levels[currentLevel].getInventory();
+}
+
+void LevelManager::selectLevel( unsigned level )
+{
+	currentLevel = level;
+}
+
 void LevelManager::onTimeChanged( Year deltaYear )
 {
 	GardenLogic* gardenLogic = getGardenLogic();
 	gardenLogic->updateGardenDelta(deltaYear);
+
+	GardenLogic::EvaluateGoalResult result = gardenLogic->evaluateGoal();
+	assert( result.haveWon == false ); // oh now, you won
 }
 
-void LevelManager::onLeftMouse( CoordsInt mousePosition )
+void LevelManager::onAddEntity( CoordsInt tile )
 {
-	CoordsInt clickedTile = getTile(mousePosition);
-	if (clickedTile == CoordsInt(-1, -1)){
-		return;
+	GardenLogic* gardenLogic = getGardenLogic();
+	const IGardenEntityLogic* entity = gardenLogic->getEntityAt(tile);
+	if ( !entity )
+	{
+		boost::optional<EntityDef> selectedEntityDef = getInventory()->extractSelectedEntityDef();
+		if (selectedEntityDef)
+		{
+			getGardenLogic()->plant( *selectedEntityDef, tile );
+		}
 	}
-	PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), Year(200), clickedTile);
-	getGardenLogic()->addEntity(nextSeed);
 }
 
-void LevelManager::onRightMouse( CoordsInt mousePosition )
+void LevelManager::onRemoveEntity( CoordsInt tile )
 {
-	CoordsInt clickedTile = getTile(mousePosition);
-	if (clickedTile == CoordsInt(-1, -1)){
-		return;
+	const IGardenEntityLogic* entity = getGardenLogic()->getEntityAt(tile);
+	if (entity && !entity->isStatic())
+	{
+		EntityDef entityDef = getGardenLogic()->unPlant( tile );
+		getInventory()->addEntity( entityDef, 1);
 	}
-	getGardenLogic()->unPlant(clickedTile);
-}
-
-CoordsInt LevelManager::getTile(CoordsInt mousePosition)
-{
-	DimensionsInt size = getGardenVisual()->getGardenSize();
-	DimensionsInt pixelSize = getGardenVisual()->getGardenPixelSize();
-	int translation = getGardenVisual()->getTileTranslation();
-	CoordsInt renderingOffset = viewer->getGardenRenderingOffset(getGardenVisual()); //TODO:  
-
-	CoordsInt mouseTile = (mousePosition - renderingOffset) / translation;
-	if (mouseTile.x < 0 || mouseTile.x > size.x || mouseTile.y < 0 || mouseTile.y > size.y){
-		mouseTile = CoordsInt(-1, -1);
-	}
-
-	return mouseTile;
 }

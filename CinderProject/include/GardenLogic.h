@@ -4,16 +4,18 @@
 #include "Segment.h"
 
 #include <unordered_map>
+#include "EntityDef.h"
 
 class IGardenEntityLogic;
+class IGardenGoalLogic;
 
 class GardenLogic
 {
 public:
-	GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsigned gardenHeight_, std::vector<IGardenEntityLogic*> entities_ );
+	GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsigned gardenHeight_, std::vector<IGardenEntityLogic*> entities_, std::vector<IGardenGoalLogic*> objective_ );
 
-	void addEntity(IGardenEntityLogic* entity_);
-	void unPlant(CoordsInt tile);
+	void plant( EntityDef entityDef, CoordsInt tile );
+	EntityDef unPlant(CoordsInt tile);
 
 	struct Dimensions
 	{
@@ -26,16 +28,29 @@ public:
 	Segment<Year>	getCurrentTimeState() const;
 
 	std::vector<IGardenEntityLogic*> getEntities() const;
+	const IGardenEntityLogic* getEntityAt(CoordsInt coord) const;
+	bool hasEntityAt( CoordsInt coord ) const;
 
 	void updateGardenDelta( Year deltaYear );
+
+	struct EvaluateGoalResult
+	{
+		bool haveWon = false;
+	};
+	EvaluateGoalResult evaluateGoal() const;
 
 private:
 	const Dimensions	dimensions;
 	Segment<Year>		timeline;
 
+	void refreshWorld();
 	void addEntityToMap(IGardenEntityLogic* entity_);
 	IGardenEntityLogic* getEntity(CoordsInt origin);
+	
+
 	std::unordered_map<CoordsInt, IGardenEntityLogic*> world;
 
-	std::vector<IGardenEntityLogic*> entities;
+	std::vector<IGardenEntityLogic*>	entities;
+	std::vector<IGardenGoalLogic*>		objectives;
+	
 };

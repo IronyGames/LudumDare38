@@ -32,6 +32,7 @@ private:
 public:
 	Viewer();
 	void render(std::vector<Animation2D*> *_text);
+	void renderToWholeScreen(Image _image);
 	DimensionsInt getWindowSize();
 	int getFramesPerSecond();
 	void begin();

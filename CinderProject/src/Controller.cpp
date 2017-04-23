@@ -11,6 +11,10 @@
 #include "LevelManager.h"
 #include "InputController.h"
 #include "LevelBuilder.h"
+#include "GameStateManagerBuilder.h"
+#include "GameStateManager.h"
+#include "ImageFlyweight.h"
+#include "FontFactory.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,17 +23,21 @@ using namespace std;
 void Controller::setup()
 {
 	viewer = new Viewer();
+	ImageFlyweight *images = new ImageFlyweight();
+	FontFactory *fonts = new FontFactory(images);
+	inputController = new InputController(getWindow());
+
 	setFrameRate(viewer->getFramesPerSecond());
 	setWindowSize(viewer->getWindowSize());
 
-	GameStateManagerBuilder stateBuilder = new GameStateManagerBuilder();
-	states = stateBuilder.buildStates();
+	GameStateManagerBuilder stateBuilder(images, fonts, inputController, viewer);
+	states = stateBuilder.build();
 
 	LevelBuilder levelBuilder;
 	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json");
 
 	levelManager = new LevelManager( std::move(levels), viewer );
-	inputController = new InputController( getWindow() );
+	
 	inputController->RegisterEventListener( levelManager );
 }
 
@@ -39,13 +47,16 @@ void Controller::mouseDown( MouseEvent event )
 
 void Controller::update()
 {
+	states->update();
 }
 
 void Controller::draw()
 {
+	states->draw();
+/*
 	viewer->begin();
 	viewer->render( levelManager->getGardenVisual() );
-	viewer->end();
+	viewer->end();*/
 }
 
 CINDER_APP( Controller, RendererGl )

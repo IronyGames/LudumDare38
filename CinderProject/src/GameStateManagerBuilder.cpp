@@ -25,7 +25,7 @@ GameStateManager* GameStateManagerBuilder::build()
 	states["game"] = new GameStateGame(images, fonts, input, viewer);
 	states["win"] = new GameStateEnd(images, fonts, input, viewer);
 
-	//return new GameStateManager(states, "menu");
-	return new GameStateManager(states, "game"); //debug
+	return new GameStateManager(states, "menu");
+	//return new GameStateManager(states, "game"); //debug
 	
 }

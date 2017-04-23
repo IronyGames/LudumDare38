@@ -10,14 +10,15 @@ InputController::InputController( cinder::app::WindowRef window_ )
 	m_onKeyPressedConnection = window->getSignalKeyDown().connect( 
 		[this]( const cinder::app::KeyEvent& keyEvent )
 		{
+			Dispatcher<InputEventListener>::emit(&InputEventListener::onAnyKey);
 			if ( keyEvent.getCode() == cinder::app::KeyEvent::KEY_RIGHT)
 			{
-				emit( &EventListener::onTimeChanged, Year(5) );
+				Dispatcher<GardenEventListener>::emit( &GardenEventListener::onTimeChanged, Year(5) );
 			}
 
 			if(keyEvent.getCode() == cinder::app::KeyEvent::KEY_LEFT)
 			{
-				emit( &EventListener::onTimeChanged, Year( -5 ) );
+				Dispatcher<GardenEventListener>::emit(&GardenEventListener::onTimeChanged, Year(-5));
 			}
 		} );
 
@@ -29,11 +30,11 @@ InputController::InputController( cinder::app::WindowRef window_ )
 			{
 				if(mouseEvent.isLeft())
 				{
-					emit( &EventListener::onAddEntity, *tile );
+					Dispatcher<GardenEventListener>::emit(&GardenEventListener::onAddEntity, *tile);
 				}
 				else if(mouseEvent.isRight())
 				{
-					emit( &EventListener::onRemoveEntity, *tile );
+					Dispatcher<GardenEventListener>::emit(&GardenEventListener::onRemoveEntity, *tile);
 				}
 			}
 			

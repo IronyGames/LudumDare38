@@ -9,7 +9,7 @@ class WindowObserver;
 class IGardenEntityLogic;
 class InventoryLogic;
 
-class LevelManager : public EventListener
+class LevelManager : public GardenEventListener
 {
 public:
 	LevelManager( std::vector<Level> levels_ );

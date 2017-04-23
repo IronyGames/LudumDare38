@@ -25,17 +25,6 @@ void Controller::setup()
 
 	GameStateManagerBuilder stateBuilder(images, fonts, inputController, viewer);
 	states = stateBuilder.build();
-
-	levelManager = new LevelManager( std::move(levels) );
-	inputController = new InputController( getWindow() );
-
-	inputController->RegisterListener( levelManager );
-
-	const auto dimensions = levelManager->getGardenLogic()->getDimensions();
-	inputController->onLevelGridChanged( dimensions.witdh, dimensions.height );
-
-	const auto gardenPixelSize = levelManager->getGardenVisual()->getGardenPixelSize();
-	inputController->onWorldDimensionsChange( gardenPixelSize.x, gardenPixelSize.y );
 }
 
 void Controller::mouseDown( MouseEvent event )

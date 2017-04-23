@@ -17,8 +17,8 @@ GameStateGame::GameStateGame(ImageFlyweight *_images, FontFactory *_fonts, Input
 {
 	deactivate();
 	LevelBuilder levelBuilder;
-	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json", images)
-  background = images->get("../resources/game_bg.png");
+	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json", images);
+	background = images->get("../resources/game_bg.png");
 	levelCompleteImage = images->get("../resources/level_complete_overlay.png");
 
 	levelManager = new LevelManager(std::move(levels));

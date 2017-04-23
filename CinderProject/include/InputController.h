@@ -49,6 +49,7 @@ private:
 	cinder::app::WindowRef window;
 	cinder::signals::ScopedConnection m_onKeyPressedConnection;
 	cinder::signals::ScopedConnection m_onMouseClickConnection;
+	cinder::signals::ScopedConnection m_onResizeConection;
 
 	std::vector<GardenEventListener*> listeners;
 

@@ -16,12 +16,13 @@ using namespace std;
 void Controller::setup()
 {
 	viewer = new Viewer();
+
+	setFrameRate( viewer->getFramesPerSecond() );
+	setWindowSize( viewer->getWindowSize() );
+
 	ImageFlyweight *images = new ImageFlyweight();
 	FontFactory *fonts = new FontFactory(images);
 	inputController = new InputController(getWindow());
-
-	setFrameRate(viewer->getFramesPerSecond());
-	setWindowSize(viewer->getWindowSize());
 
 	GameStateManagerBuilder stateBuilder(images, fonts, inputController, viewer);
 	states = stateBuilder.build();

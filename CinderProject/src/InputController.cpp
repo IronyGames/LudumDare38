@@ -41,6 +41,12 @@ InputController::InputController( cinder::app::WindowRef window_ )
 			
 		});
 
+	m_onResizeConection = window->getSignalResize().connect(
+		[this]()
+		{
+			onWindowSizeChange( window->getSize().x, window->getSize().y );
+		}
+	);
 	onWindowSizeChange( window->getSize().x, window->getSize().y );
 }
 

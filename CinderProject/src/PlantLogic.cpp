@@ -43,9 +43,10 @@ public:
 	CoordsInt seedPosition;
 };
 
-PlantLogic::PlantLogic( GardenEntityPattern pattern_, Year seedTime, Year age_, CoordsInt pos_ )
+PlantLogic::PlantLogic( GardenEntityPattern pattern_, Year seedTime, Year age_, CoordsInt pos_, std::string type_ )
 	: gardenEntityPattern(pattern_)
 	, state( new PlantLogicState( seedTime ) )
+	, type(type_)
 {
 	state->plantTimeline = Segment<Year>(gardenEntityPattern.lifeRange.getMin(), gardenEntityPattern.lifeRange.getMax(), age_);
 	state->seedPosition = pos_;
@@ -85,6 +86,11 @@ Year PlantLogic::getSeedYear() const
 Year PlantLogic::getAge( Year currentYear ) const
 {
 	return state->getAge( currentYear );
+}
+
+std::string PlantLogic::getType() const
+{
+	return type;
 }
 
 PlantLogic::CalculateStateResult PlantLogic::calculateStateTo( Year year, Year deltaYear ) const

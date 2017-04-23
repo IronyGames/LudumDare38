@@ -22,6 +22,9 @@ void LevelManager::onTimeChanged( Year deltaYear )
 {
 	GardenLogic* gardenLogic = getGardenLogic();
 	gardenLogic->updateGardenDelta(deltaYear);
+
+	GardenLogic::EvaluateGoalResult result = gardenLogic->evaluateGoal();
+	assert( result.haveWon == false ); // oh now, you won
 }
 
 void LevelManager::onLeftMouse( CoordsInt mousePosition )
@@ -30,7 +33,7 @@ void LevelManager::onLeftMouse( CoordsInt mousePosition )
 	if (clickedTile == CoordsInt(-1, -1)){
 		return;
 	}
-	PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), Year(200), clickedTile);
+	PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), Year(200), clickedTile, "test_plant");
 	getGardenLogic()->addEntity(nextSeed);
 }
 

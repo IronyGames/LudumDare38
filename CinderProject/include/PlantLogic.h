@@ -9,7 +9,7 @@ class PlantLogicState;
 class PlantLogic : public IGardenEntityLogic
 {
 public:
-	PlantLogic( GardenEntityPattern pattern, Year seedTime, Year age, CoordsInt pos );
+	PlantLogic( GardenEntityPattern pattern, Year seedTime, Year age, CoordsInt pos, std::string type );
 	~PlantLogic() override;
 
 	std::vector<CoordsInt> getOccupiedPositions() const override;
@@ -19,11 +19,13 @@ public:
 	Segment<Year> getTimeLine() const override;
 	Year getSeedYear() const override;
 	Year getAge( Year currentYear ) const override;
+	std::string		getType() const override;
 
 	CalculateStateResult calculateStateTo( Year year, Year deltaYear ) const override;
 
 private:	
 	const GardenEntityPattern	gardenEntityPattern;
+	const std::string type;
 
 	owner<PlantLogicState>	state;
 };

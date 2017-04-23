@@ -14,6 +14,8 @@ public:
 	double getSeedYear();
 	cinderColor getTimelineColor();
 	double getMaxAge();
+	double getAge( Year year_ ) const;
+
 private:
 	PlantLogic* m_logic;
 	cinderColor m_growthColor;

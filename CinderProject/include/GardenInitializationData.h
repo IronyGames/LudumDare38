@@ -21,6 +21,7 @@ struct GardenInitializationData
 	{
 		std::string name;
 		Year age;
+		Year seedYear;
 	};
 	std::unordered_map<CoordsInt, Entity> initialEntities;
 };

@@ -17,11 +17,7 @@ public:
 	void draw() override;
 private:
 	Viewer *viewer;
-	GardenVisual *g;
-	GardenLogic *gardenLogic;
 
 	owner<LevelManager>		levelManager;
 	owner<InputController>	inputController;
-
-	cinder::signals::ScopedConnection levelManagerEventListenerConnection;
 };

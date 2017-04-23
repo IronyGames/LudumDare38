@@ -17,11 +17,11 @@ private:
 	float zoom;
 	int framesPerSecond;
 	cinderColor* backgroundColor;
-	void render(PlantVisual *plant);
+	void render(PlantVisual *plant, Year year );
 	void renderTile(cinderColor tileColor);
 	void renderGardenTimeline(GardenVisual *garden);
 	void renderGarden(GardenVisual *garden);
-	void render(std::vector<PlantVisual*> plants);
+	void render(std::vector<PlantVisual*> plants, Year year );
 	int tileSize;
 	int tileSeparator;
 	int timeLineHeight;

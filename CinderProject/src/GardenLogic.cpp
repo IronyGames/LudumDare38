@@ -12,7 +12,7 @@ GardenLogic::GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsign
 {
 	for (IGardenEntityLogic* entity : entities )
 	{
-		for (CoordsInt coord : entity->getCurrentState()->getOccupiedPositions() )
+		for (CoordsInt coord : entity->getOccupiedPositions() )
 		{
 			assert( world.find(coord) == world.end() );
 			world[coord] = entity;
@@ -30,14 +30,14 @@ Segment<Year> GardenLogic::getCurrentTimeState() const
 	return timeline;
 }
 
-void GardenLogic::updateGardenDelta( Year year )
+void GardenLogic::updateGardenDelta( Year deltaYear )
 {
-	timeline += year;
+	timeline += deltaYear;
 	for ( IGardenEntityLogic* gardenEntity : getEntities() )
 	{
-		PlantLogic::CalculateStateResult result = gardenEntity->calculateStateTo(year);
+		PlantLogic::CalculateStateResult result = gardenEntity->calculateStateTo( timeline.get(), deltaYear );
 
-		// TODO: Do stuff later
+		gardenEntity->setCurrentState(result.age, result.occupiedPositions);
 	}
 }
 

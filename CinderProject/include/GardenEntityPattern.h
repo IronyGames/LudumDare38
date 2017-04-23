@@ -8,22 +8,38 @@
 
 struct GardenEntityPattern
 {
-	struct Pattern
+	struct PatternNode
 	{
-		Pattern() = default;
-		Pattern( Year year_ )
-			: year(year_)
-		{}
+		PatternNode() = default;
 
 		Year year = 0;
 		std::vector<CoordsInt> relativePositions;
 
-		bool operator<( const Pattern& other ) const
+		bool operator<( const PatternNode& other ) const
 		{
 			return year < other.year;
 		}
 	};
 
-	std::set<Pattern>	treePatterns;
+	const PatternNode& getFirstNodeInSegmentFrom( Year age ) const
+	{
+		assert(age >= 0);
+		assert(!treePatterns.empty());
+
+		for( auto it = treePatterns.begin(); it != treePatterns.end(); ++it )
+		{
+			const PatternNode& pattern = *it;
+			if ( age < pattern.year )
+			{
+				--it;
+				return *it;
+			}
+		}
+
+
+		return *treePatterns.rbegin();
+	}
+
+	std::set<PatternNode>	treePatterns;
 	Segment<Year>		lifeRange;
 };

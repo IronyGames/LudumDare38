@@ -99,7 +99,6 @@ void Viewer::render(GardenVisual *garden)
 	cinder::gl::pushMatrices();
 	cinder::gl::translate(getGardenRenderingOffset(garden));
 	renderGarden(garden);
-
 	std::vector<PlantVisual*> plants = garden->getPlants();
 	for (auto plant = plants.begin(); plant != plants.end(); plant++){
 		renderPlant(*plant, garden->getTileTranslation(), garden->getTileSize());
@@ -164,6 +163,15 @@ void Viewer::renderPlant(PlantVisual *plant, int translation, int tileSize)
 		cinder::gl::translate(translation);
 		renderTile(plant->getPlantTile(growth), tileSize);
 		cinder::gl::popMatrices();
+	}
+	
+	cinder::gl::pushMatrices();
+	cinder::gl::translate( getTileTranslation( seedPosition ) );
+
+	const Year age = plant->getAge( year );
+	if(age > 0)
+	{
+		renderTile( plant->getSeedTile() );
 	}
 	cinder::gl::popMatrices();
 }

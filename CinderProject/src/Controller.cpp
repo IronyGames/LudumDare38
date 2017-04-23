@@ -36,7 +36,6 @@ void Controller::mouseDown( MouseEvent event )
 
 void Controller::update()
 {
-	bool isConnected = levelManagerEventListenerConnection.isConnected();
 }
 
 void Controller::draw()

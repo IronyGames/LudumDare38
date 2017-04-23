@@ -20,6 +20,4 @@ private:
 
 	owner<LevelManager>		levelManager;
 	owner<InputController>	inputController;
-
-	cinder::signals::ScopedConnection levelManagerEventListenerConnection;
 };

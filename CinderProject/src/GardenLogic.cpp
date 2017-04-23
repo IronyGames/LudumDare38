@@ -35,14 +35,14 @@ Segment<Year> GardenLogic::getCurrentTimeState() const
 	return timeline;
 }
 
-void GardenLogic::updateGardenDelta( Year year )
+void GardenLogic::updateGardenDelta( Year deltaYear )
 {
-	timeline += year;
+	timeline += deltaYear;
 	for ( IGardenEntityLogic* gardenEntity : getEntities() )
 	{
-		PlantLogic::CalculateStateResult result = gardenEntity->calculateStateTo(year);
+		PlantLogic::CalculateStateResult result = gardenEntity->calculateStateTo( timeline.get(), deltaYear );
 
-		// TODO: Do stuff later
+		gardenEntity->setCurrentState(result.age, result.occupiedPositions);
 	}
 }
 

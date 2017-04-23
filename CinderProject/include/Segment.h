@@ -10,18 +10,21 @@ public:
 	Segment();
 	Segment(T minimum, T maximum);
 	Segment(T minimum, T maximum, T currentValue);
+
+	Segment& operator=( const T& other);
+
 	void operator+= (const T& obj);
 	void operator-= (const T& obj);
 	void operator*= (const T& obj);
 	void operator/= (const T& obj);
-	T& get();
-	int getMax();
-	int getMin();
+	const T& get() const;
+	int getMax() const;
+	int getMin() const;
 	void setToMax();
 	void setToMin();
     
-	bool isMax();
-	bool isMin();
+	bool isMax() const;
+	bool isMin() const;
 
 };
 

@@ -16,6 +16,17 @@ inline Segment<T>::Segment(T minimum, T maximum)
 : min(minimum), max(maximum), current(minimum){
 }
 
+
+template <class T>
+inline Segment<T>& Segment<T>::operator=( const T& currentValue )
+{
+	current = currentValue;
+	evaluateLimits();
+
+	return *this;
+}
+
+
 template <class T>
 inline Segment<T>::Segment(T minimum, T maximum, T currentValue)
 : min(minimum), max(maximum), current(currentValue){
@@ -47,18 +58,18 @@ inline void Segment<T>::operator/= (const T& obj){
 }
 
 template <class T>
-inline T& Segment<T>::get(){
+inline const T& Segment<T>::get() const {
 	return current;
 }
 
 template <class T>
-int Segment<T>::getMin()
+int Segment<T>::getMin() const
 {
 	return min;
 }
 
 template <class T>
-int Segment<T>::getMax()
+int Segment<T>::getMax() const
 {
 	return max;
 }
@@ -74,13 +85,13 @@ inline void Segment<T>::setToMin(){
 }
 
 template <class T>
-bool Segment<T>::isMax()
+bool Segment<T>::isMax() const
 {
 	return current == max;
 }
 
 template <class T>
-bool Segment<T>::isMin()
+bool Segment<T>::isMin() const
 {
 	return current == min;
 }

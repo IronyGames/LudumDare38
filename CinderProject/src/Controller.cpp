@@ -22,6 +22,9 @@ void Controller::setup()
 	setFrameRate(viewer->getFramesPerSecond());
 	setWindowSize(viewer->getWindowSize());
 
+	GameStateManagerBuilder stateBuilder = new GameStateManagerBuilder();
+	states = stateBuilder.buildStates();
+
 	LevelBuilder levelBuilder;
 	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json");
 

@@ -8,6 +8,7 @@ class GardenVisual;
 class GardenLogic;
 class LevelManager;
 class InputController;
+class GameStateManager;
 
 class Controller : public cinder::app::App {
 public:
@@ -17,6 +18,7 @@ public:
 	void draw() override;
 private:
 	Viewer *viewer;
+	GameStateManager *states;
 
 	owner<LevelManager>		levelManager;
 	owner<InputController>	inputController;

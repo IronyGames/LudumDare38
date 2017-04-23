@@ -216,3 +216,11 @@ CoordsInt Viewer::getGardenRenderingOffset(GardenVisual *garden)
 	DimensionsInt halfSize = garden->getGardenPixelSize();
 	return CoordsInt((windowSize - halfSize).x / 2, (windowSize - halfSize).y / 3);
 }
+
+void Viewer::renderToWholeScreen(Image _image)
+{
+	cinder::gl::pushMatrices();
+	cinder::gl::scale(windowSize / _image->getSize());
+	cinder::gl::draw(_image);
+	cinder::gl::popMatrices();
+}

@@ -12,9 +12,11 @@ private:
 	ImageFlyweight *images;
 	std::map<char, Animation2D*> letters;
 	Animation2D* getLetter(char l);
+	DimensionsInt *charSize;
 public:
 	FontFactory();
 	FontFactory(ImageFlyweight *_images);
 	FontText* getText(String _text);
 	void load();
+	DimensionsInt* getCharSize();
 };

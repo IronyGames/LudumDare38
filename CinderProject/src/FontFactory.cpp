@@ -29,7 +29,7 @@ FontText* FontFactory::getText(String _text)
 
 void FontFactory::load()
 {
-	DimensionsInt *charSize = new DimensionsInt(8, 7);
+	charSize = new DimensionsInt(8, 7);
 
 	Image font = images->get("../resources/fonts.png");
 
@@ -57,4 +57,9 @@ Animation2D* FontFactory::getLetter(char l)
 		throw new std::exception(msg.c_str());
 	}
 	return letters.at(l);
+}
+
+DimensionsInt* FontFactory::getCharSize()
+{
+	return charSize;
 }

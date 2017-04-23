@@ -7,16 +7,22 @@
 
 class IGardenEntityLogic;
 
-class EventListener
+class GardenEventListener
 {
 	friend class InputController;
 public:
-	virtual ~EventListener() = default;
+	virtual ~GardenEventListener() = default;
 
 private:
 	virtual void onTimeChanged( Year deltaYear ) = 0;
 	virtual void onAddEntity(CoordsInt tile ) = 0;
 	virtual void onRemoveEntity(CoordsInt tile ) = 0;
+};
+
+class InputEventListener{
+	friend class InputController;
+private:
+	virtual void onAnyKey() = 0;
 };
 
 class WindowObserver
@@ -27,7 +33,7 @@ public:
 	virtual void onWindowSizeChange( unsigned width_, unsigned height_ ) = 0;
 };
 
-class InputController : public WindowObserver, public Dispatcher<EventListener>
+class InputController : public WindowObserver, public Dispatcher<GardenEventListener>, public Dispatcher<InputEventListener>
 {
 public:
 	InputController( cinder::app::WindowRef window_ );
@@ -38,14 +44,13 @@ public:
 
 private:
 
-
 	boost::optional<CoordsInt> pixelToTile(CoordsInt mousePosition);
 
 	cinder::app::WindowRef window;
 	cinder::signals::ScopedConnection m_onKeyPressedConnection;
 	cinder::signals::ScopedConnection m_onMouseClickConnection;
 
-	std::vector<EventListener*> listeners;
+	std::vector<GardenEventListener*> listeners;
 
 	DimensionsInt totalInPixels;
 	DimensionsInt worldInPixels;

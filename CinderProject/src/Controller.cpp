@@ -2,15 +2,12 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "Viewer.h"
-#include "GardenVisual.h"
-#include "PlantVisual.h"
-#include "LevelManager.h"
+#include "ImageFlyweight.h"
+#include "FontFactory.h"
 #include "InputController.h"
-#include "GardenLogic.h"
-#include "PlantLogic.h"
-#include "LevelManager.h"
-#include "InputController.h"
-#include "LevelBuilder.h"
+#include "GameStateManagerBuilder.h"
+#include "GameStateManager.h"
+
 
 using namespace ci;
 using namespace ci::app;
@@ -19,22 +16,15 @@ using namespace std;
 void Controller::setup()
 {
 	viewer = new Viewer();
+	ImageFlyweight *images = new ImageFlyweight();
+	FontFactory *fonts = new FontFactory(images);
+	inputController = new InputController(getWindow());
+
 	setFrameRate(viewer->getFramesPerSecond());
 	setWindowSize(viewer->getWindowSize());
 
-	LevelBuilder levelBuilder;
-	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json");
-
-	levelManager = new LevelManager( std::move(levels) );
-	inputController = new InputController( getWindow() );
-
-	inputController->RegisterListener( levelManager );
-
-	const auto dimensions = levelManager->getGardenLogic()->getDimensions();
-	inputController->onLevelGridChanged( dimensions.witdh, dimensions.height );
-
-	const auto gardenPixelSize = levelManager->getGardenVisual()->getGardenPixelSize();
-	inputController->onWorldDimensionsChange( gardenPixelSize.x, gardenPixelSize.y );
+	GameStateManagerBuilder stateBuilder(images, fonts, inputController, viewer);
+	states = stateBuilder.build();
 }
 
 void Controller::mouseDown( MouseEvent event )
@@ -43,13 +33,12 @@ void Controller::mouseDown( MouseEvent event )
 
 void Controller::update()
 {
+	states->update();
 }
 
 void Controller::draw()
 {
-	viewer->begin();
-	viewer->render( levelManager->getGardenVisual() );
-	viewer->end();
+	states->draw();
 }
 
 CINDER_APP( Controller, RendererGl )

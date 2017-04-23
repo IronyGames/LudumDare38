@@ -16,18 +16,12 @@ GameStateGame::GameStateGame(ImageFlyweight *_images, FontFactory *_fonts, Input
 , input(_input)
 , hasClicked(false)
 {
+	deactivate();
 	LevelBuilder levelBuilder;
 	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json");
 
 	levelManager = new LevelManager(std::move(levels));
 
-	input->Dispatcher<GardenEventListener>::RegisterListener(levelManager);
-
-	const auto dimensions = levelManager->getGardenLogic()->getDimensions();
-	input->onLevelGridChanged(dimensions.witdh, dimensions.height);
-
-	const auto gardenPixelSize = levelManager->getGardenVisual()->getGardenPixelSize();
-	input->onWorldDimensionsChange(gardenPixelSize.x, gardenPixelSize.y);
 }
 
 String GameStateGame::update()
@@ -51,6 +45,22 @@ void GameStateGame::onAnyKey()
 }
 
 GameStateGame::~GameStateGame()
+{
+	
+}
+
+void GameStateGame::activate()
+{
+	input->Dispatcher<GardenEventListener>::RegisterListener(levelManager);
+
+	const auto dimensions = levelManager->getGardenLogic()->getDimensions();
+	input->onLevelGridChanged(dimensions.witdh, dimensions.height);
+
+	const auto gardenPixelSize = levelManager->getGardenVisual()->getGardenPixelSize();
+	input->onWorldDimensionsChange(gardenPixelSize.x, gardenPixelSize.y);
+}
+
+void GameStateGame::deactivate()
 {
 	input->Dispatcher<GardenEventListener>::UnregisterListener(levelManager);
 }

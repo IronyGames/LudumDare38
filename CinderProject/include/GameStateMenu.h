@@ -15,10 +15,12 @@ public:
 	String update() override;
 	void draw() override;
 	void onAnyKey() override;
+	void activate();
+	void deactivate();
 private:
 	Viewer *viewer;
 	Image background;
 	FontFactory *fonts;
 	InputController *input;
-	bool hasClicked;
+	bool hasClicked, isActive;
 };

@@ -9,8 +9,10 @@ GameStateInstructions::GameStateInstructions(ImageFlyweight *_images, FontFactor
 , fonts(_fonts)
 , viewer(_viewer)
 , hasClicked(false)
+, input(_input)
 {
-
+	input->Dispatcher<InputEventListener>::RegisterListener(this);
+	deactivate();
 }
 
 String GameStateInstructions::update()
@@ -42,11 +44,28 @@ void GameStateInstructions::draw()
 
 void GameStateInstructions::onAnyKey()
 {
-	hasClicked = true;
+	if (isActive){
+		hasClicked = true;
+	}
 }
 
 void GameStateInstructions::renderTextLine(String text, int height)
 {
 	viewer->render(fonts->getText(text));
 	cinder::gl::translate(0, 2*height);
+}
+
+GameStateInstructions::~GameStateInstructions()
+{
+	input->Dispatcher<InputEventListener>::UnregisterListener(this);
+}
+
+void GameStateInstructions::activate()
+{
+	isActive = true;
+}
+
+void GameStateInstructions::deactivate()
+{
+	isActive = false;
 }

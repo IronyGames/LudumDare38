@@ -10,7 +10,7 @@ InputController::InputController( cinder::app::WindowRef window_ )
 	m_onKeyPressedConnection = window->getSignalKeyDown().connect( 
 		[this]( const cinder::app::KeyEvent& keyEvent )
 		{
-			Dispatcher<InputEventListener>::emit(&InputEventListener::onAnyKey);
+			
 			if ( keyEvent.getCode() == cinder::app::KeyEvent::KEY_RIGHT)
 			{
 				Dispatcher<GardenEventListener>::emit( &GardenEventListener::onTimeChanged, Year(5) );
@@ -25,6 +25,7 @@ InputController::InputController( cinder::app::WindowRef window_ )
 	m_onMouseClickConnection = window->getSignalMouseDown().connect(
 		[this](const cinder::app::MouseEvent& mouseEvent)
 		{
+			Dispatcher<InputEventListener>::emit(&InputEventListener::onAnyKey);
 			boost::optional<CoordsInt> tile = pixelToTile(mouseEvent.getPos());
 			if (tile)
 			{
@@ -60,6 +61,9 @@ void InputController::onWindowSizeChange( unsigned width_, unsigned height_ )
 
 boost::optional<CoordsInt> InputController::pixelToTile(CoordsInt mousePosition)
 {
+	if (worldInGrid.x == 0){
+		return boost::none;
+	}
 	int translation = worldInPixels.x / worldInGrid.x;
 	CoordsInt renderingOffset((totalInPixels - worldInPixels).x / 2, (totalInPixels - worldInPixels).y / 3);
 	

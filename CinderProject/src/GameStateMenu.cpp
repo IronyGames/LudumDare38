@@ -13,6 +13,7 @@ GameStateMenu::GameStateMenu(ImageFlyweight *_images, FontFactory *_fonts, Input
 , input(_input)
 {
 	input->Dispatcher<InputEventListener>::RegisterListener(this);
+	deactivate();
 }
 
 String GameStateMenu::update()
@@ -32,10 +33,22 @@ void GameStateMenu::draw()
 
 void GameStateMenu::onAnyKey()
 {
-	hasClicked = true;
+	if (isActive){
+		hasClicked = true;
+	}
 }
 
 GameStateMenu::~GameStateMenu()
 {
 	input->Dispatcher<InputEventListener>::UnregisterListener(this);
+}
+
+void GameStateMenu::activate()
+{
+	isActive = true;
+}
+
+void GameStateMenu::deactivate()
+{
+	isActive = false;
 }

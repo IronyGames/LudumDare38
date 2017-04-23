@@ -16,7 +16,8 @@ public:
 	String update() override;
 	void draw() override;
 	void onAnyKey();
-
+	void activate() override;
+	void deactivate() override;
 private:
 	Viewer *viewer;
 	ImageFlyweight *images;

@@ -24,3 +24,13 @@ void GameStateEnd::draw()
 	viewer->renderToWholeScreen(background);
 	viewer->end();
 }
+
+void GameStateEnd::activate()
+{
+
+}
+
+void GameStateEnd::deactivate()
+{
+
+}

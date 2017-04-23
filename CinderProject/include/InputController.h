@@ -4,6 +4,8 @@
 #include "Typedef.h"
 #include "Dispatcher.h"
 
+class IGardenEntityLogic;
+
 class EventListener
 {
 	friend class InputController;
@@ -12,10 +14,8 @@ public:
 
 private:
 	virtual void onTimeChanged( Year deltaYear ) = 0;
-// 	virtual void onRewindTime() = 0;
-// 	virtual void onForwardTime() = 0;
-	virtual void onLeftMouse(CoordsInt mousePosition) = 0;
-	virtual void onRightMouse(CoordsInt mousePosition) = 0;
+	virtual void onAddEntity(CoordsInt tile, IGardenEntityLogic* entity) = 0;
+	virtual void onRemoveEntity(CoordsInt tile) = 0;
 };
 
 class WindowObserver
@@ -37,18 +37,24 @@ public:
 
 private:
 
+
+	CoordsInt pixelToTile(CoordsInt mousePosition);
+
 	cinder::app::WindowRef window;
 	cinder::signals::ScopedConnection m_onKeyPressedConnection;
 	cinder::signals::ScopedConnection m_onMouseClickConnection;
 
 	std::vector<EventListener*> listeners;
 
+	DimensionsInt totalInPixels;
 	unsigned totalWidthInPixels = 0;
 	unsigned totalHeightInPixels = 0;
 
+	DimensionsInt worldInPixels;
 	unsigned worldWidthInPixels = 0;
 	unsigned worldHeightInPixels = 0;
 
+	DimensionsInt worldInGrid;
 	unsigned gardenWidthDimension = 0;
 	unsigned gardenHeightDimension = 0;
 

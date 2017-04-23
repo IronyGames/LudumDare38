@@ -25,11 +25,16 @@ void Controller::setup()
 	LevelBuilder levelBuilder;
 	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json");
 
-	levelManager = new LevelManager( std::move(levels), viewer );
+	levelManager = new LevelManager( std::move(levels) );
 	inputController = new InputController( getWindow() );
 
 	inputController->RegisterListener( levelManager );
-	levelManager->RegisterListener( inputController );
+
+	const auto dimensions = levelManager->getGardenLogic()->getDimensions();
+	inputController->onLevelGridChanged( dimensions.witdh, dimensions.height );
+
+	const auto gardenPixelSize = levelManager->getGardenVisual()->getGardenPixelSize();
+	inputController->onWorldDimensionsChange( gardenPixelSize.x, gardenPixelSize.y );
 }
 
 void Controller::mouseDown( MouseEvent event )

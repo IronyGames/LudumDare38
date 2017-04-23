@@ -3,11 +3,9 @@
 #include "GardenVisual.h"
 #include "PlantLogic.h"
 #include "PlantVisual.h"
-#include "Viewer.h"
 
-
-LevelManager::LevelManager(std::vector<Level> levels_, Viewer *_viewer)
-	: levels(std::move(levels_)), viewer(_viewer)
+LevelManager::LevelManager(std::vector<Level> levels_ )
+	: levels(std::move(levels_))
 {
 	selectLevel(0);
 }
@@ -25,9 +23,6 @@ GardenLogic* LevelManager::getGardenLogic() const
 void LevelManager::selectLevel( unsigned level )
 {
 	currentLevel = level;
-
-	const auto dimensions = levels[currentLevel].getGardenLogic()->getDimensions();
-	emit( &WindowObserver::onLevelGridChanged, dimensions.witdh, dimensions.height );
 }
 
 void LevelManager::onTimeChanged( Year deltaYear )
@@ -39,36 +34,18 @@ void LevelManager::onTimeChanged( Year deltaYear )
 	assert( result.haveWon == false ); // oh now, you won
 }
 
-void LevelManager::onLeftMouse( CoordsInt mousePosition )
+void LevelManager::onAddEntity( CoordsInt tile, IGardenEntityLogic* entity )
 {
-	CoordsInt clickedTile = getTile(mousePosition);
-	if (clickedTile == CoordsInt(-1, -1)){
+	if (tile == CoordsInt(-1, -1)){
 		return;
 	}
-	PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), Year(200), clickedTile, "test_plant");
-	getGardenLogic()->addEntity(nextSeed);
+	getGardenLogic()->addEntity(entity);
 }
 
-void LevelManager::onRightMouse( CoordsInt mousePosition )
+void LevelManager::onRemoveEntity( CoordsInt tile )
 {
-	CoordsInt clickedTile = getTile(mousePosition);
-	if (clickedTile == CoordsInt(-1, -1)){
+	if (tile == CoordsInt(-1, -1)){
 		return;
 	}
-	getGardenLogic()->unPlant(clickedTile);
-}
-
-CoordsInt LevelManager::getTile(CoordsInt mousePosition)
-{
-	DimensionsInt size = getGardenVisual()->getGardenSize();
-	DimensionsInt pixelSize = getGardenVisual()->getGardenPixelSize();
-	int translation = getGardenVisual()->getTileTranslation();
-	CoordsInt renderingOffset = viewer->getGardenRenderingOffset(getGardenVisual()); //TODO:  
-
-	CoordsInt mouseTile = (mousePosition - renderingOffset) / translation;
-	if (mouseTile.x < 0 || mouseTile.x > size.x || mouseTile.y < 0 || mouseTile.y > size.y){
-		mouseTile = CoordsInt(-1, -1);
-	}
-
-	return mouseTile;
+	getGardenLogic()->unPlant(tile);
 }

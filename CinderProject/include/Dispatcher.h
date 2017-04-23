@@ -1,21 +1,19 @@
 #pragma once
 
+#include <set>
+
 template<typename Listener>
 class Dispatcher
 {
 public:
 	void RegisterListener( Listener* listener )
 	{
-		listeners.push_back(listener);
+		listeners.emplace(listener);
 	}
 
 	void UnregisterListener( Listener* listener )
 	{
-		auto it = std::find( listeners.begin(), listeners.end(), listener );
-		if (it != listeners.end())
-		{
-			listeners.erase(it);
-		}
+		listeners.erase( listener );
 	}
 
 protected:
@@ -29,5 +27,5 @@ protected:
 	}
 
 private:
-	std::vector<Listener*> listeners;
+	std::set<Listener*> listeners;
 };

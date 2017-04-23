@@ -25,4 +25,5 @@ private:
 	bool hasClicked;
 	LevelManager *levelManager;
 	InputController *input;
+	Image background;
 };

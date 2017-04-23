@@ -19,7 +19,7 @@ GameStateGame::GameStateGame(ImageFlyweight *_images, FontFactory *_fonts, Input
 	deactivate();
 	LevelBuilder levelBuilder;
 	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json", images);
-
+	background = images->get("../resources/game_bg.png");
 	levelManager = new LevelManager(std::move(levels));
 }
 
@@ -34,6 +34,7 @@ String GameStateGame::update()
 void GameStateGame::draw()
 {
 	viewer->begin();
+	viewer->renderToWholeScreen(background);
 	viewer->render(levelManager->getGardenVisual());
 	viewer->end();
 }

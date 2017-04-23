@@ -12,6 +12,7 @@ GardenVisual::GardenVisual(const GardenLogic *_logic, ImageFlyweight *_images) :
 , tileSeparator(0)
 , soilTexture(_images->get("../resources/soil.png"))
 {
+	
 }
 
 DimensionsInt GardenVisual::getGardenSize() const

@@ -34,5 +34,5 @@ public:
 	void begin();
 	void end();
 	void render(GardenVisual *garden);
-	
+	CoordsInt getGardenRenderingOffset(GardenVisual *garden);
 };

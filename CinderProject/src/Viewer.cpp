@@ -95,10 +95,9 @@ void Viewer::end()
 void Viewer::render(GardenVisual *garden)
 {
 	DimensionsInt size = garden->getGardenSize();
-	DimensionsInt halfSize = garden->getGardenPixelSize();
 	
 	cinder::gl::pushMatrices();
-	cinder::gl::translate((windowSize - halfSize).x / 2, (windowSize - halfSize).y / 3);
+	cinder::gl::translate(getGardenRenderingOffset(garden));
 	renderGarden(garden);
 
 	std::vector<PlantVisual*> plants = garden->getPlants();
@@ -208,4 +207,10 @@ void Viewer::renderPlantTimelines(std::vector<PlantVisual*> plants, double timep
 		cinder::gl::translate(0, markerHeight + timeLineMargin);
 	}
 	cinder::gl::popMatrices();
+}
+
+CoordsInt Viewer::getGardenRenderingOffset(GardenVisual *garden)
+{
+	DimensionsInt halfSize = garden->getGardenPixelSize();
+	return CoordsInt((windowSize - halfSize).x / 2, (windowSize - halfSize).y / 3);
 }

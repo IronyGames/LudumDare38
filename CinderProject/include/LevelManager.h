@@ -3,15 +3,18 @@
 #include "Level.h"
 #include <vector>
 
+class Viewer;
+
 class LevelManager : public EventListener
 {
 public:
-	LevelManager( std::vector<Level> levels_ );
+	LevelManager( std::vector<Level> levels_, Viewer *_viewer );
 
 	GardenVisual* getGardenVisual() const;
 	GardenLogic* getGardenLogic() const;
 
 private:
+	Viewer* viewer;
 	// EventListener
 	void onTimeChanged( Year deltaYear ) override;
 // 	void onRewindTime() override;

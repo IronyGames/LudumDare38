@@ -9,7 +9,7 @@ GardenVisual::GardenVisual(const GardenLogic *_logic)
 , m_soilColor(cinderColor(0.541, 0.302, 0.184))
 , m_timelineColor(cinderColor(0.9,0.9,0.9))
 , tileSize(30)
-, tileSeparator(3)
+, tileSeparator(10)
 {
 }
 

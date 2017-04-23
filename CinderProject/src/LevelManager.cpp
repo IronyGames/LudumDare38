@@ -1,10 +1,11 @@
 #include "LevelManager.h"
 #include "GardenLogic.h"
+#include "GardenVisual.h"
 #include "PlantLogic.h"
 #include "PlantVisual.h"
+#include "Viewer.h"
 
-LevelManager::LevelManager( std::vector<Level> levels_ )
-	: levels( std::move(levels_ ))
+LevelManager::LevelManager(std::vector<Level> levels_, Viewer *_viewer) : levels(std::move(levels_)), viewer(_viewer)
 {}
 
 GardenVisual* LevelManager::getGardenVisual() const
@@ -26,6 +27,9 @@ void LevelManager::onTimeChanged( Year deltaYear )
 void LevelManager::onLeftMouse( CoordsInt mousePosition )
 {
 	CoordsInt clickedTile = getTile(mousePosition);
+	if (clickedTile == CoordsInt(-1, -1)){
+		return;
+	}
 	PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), clickedTile);
 	getGardenLogic()->addEntity(nextSeed);
 }
@@ -33,10 +37,23 @@ void LevelManager::onLeftMouse( CoordsInt mousePosition )
 void LevelManager::onRightMouse( CoordsInt mousePosition )
 {
 	CoordsInt clickedTile = getTile(mousePosition);
+	if (clickedTile == CoordsInt(-1, -1)){
+		return;
+	}
 	getGardenLogic()->unPlant(clickedTile);
 }
 
 CoordsInt LevelManager::getTile(CoordsInt mousePosition)
 {
-	return CoordsInt(1, 1);
+	DimensionsInt size = getGardenVisual()->getGardenSize();
+	DimensionsInt pixelSize = getGardenVisual()->getGardenPixelSize();
+	int translation = getGardenVisual()->getTileTranslation();
+	CoordsInt renderingOffset = viewer->getGardenRenderingOffset(getGardenVisual()); //TODO:  
+
+	CoordsInt mouseTile = (mousePosition - renderingOffset) / translation;
+	if (mouseTile.x < 0 || mouseTile.x > size.x || mouseTile.y < 0 || mouseTile.y > size.y){
+		mouseTile = CoordsInt(-1, -1);
+	}
+
+	return mouseTile;
 }

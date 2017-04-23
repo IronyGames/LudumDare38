@@ -5,8 +5,12 @@
 #include "PlantVisual.h"
 #include "Viewer.h"
 
-LevelManager::LevelManager(std::vector<Level> levels_, Viewer *_viewer) : levels(std::move(levels_)), viewer(_viewer)
-{}
+
+LevelManager::LevelManager(std::vector<Level> levels_, Viewer *_viewer)
+	: levels(std::move(levels_)), viewer(_viewer)
+{
+	selectLevel(0);
+}
 
 GardenVisual* LevelManager::getGardenVisual() const
 {
@@ -16,6 +20,14 @@ GardenVisual* LevelManager::getGardenVisual() const
 GardenLogic* LevelManager::getGardenLogic() const
 {
 	return levels[currentLevel].getGardenLogic();
+}
+
+void LevelManager::selectLevel( unsigned level )
+{
+	currentLevel = level;
+
+	const auto dimensions = levels[currentLevel].getGardenLogic()->getDimensions();
+	emit( &WindowObserver::onLevelGridChanged, dimensions.witdh, dimensions.height );
 }
 
 void LevelManager::onTimeChanged( Year deltaYear )

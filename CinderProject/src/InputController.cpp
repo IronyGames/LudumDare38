@@ -2,18 +2,6 @@
 
 #include <algorithm>
 
-
-
-template<typename Method, typename... Args>
-void InputController::emit( Method method, Args&&... args )
-{
-	for (EventListener* listener : listeners )
-	{
-		(listener->*method)( std::forward<Args>(args)... );
-	}
-}
-
-
 InputController::InputController( cinder::app::WindowRef window_ )
 	: window(window_)
 {
@@ -43,20 +31,6 @@ InputController::InputController( cinder::app::WindowRef window_ )
 		});
 
 	onWindowSizeChange( window->getSize().x, window->getSize().y );
-}
-
-void InputController::RegisterEventListener( EventListener* listener )
-{
-	listeners.emplace_back(listener);
-}
-
-void InputController::UnregisterEventListener( EventListener* listener )
-{
-	auto it = std::find(listeners.begin(), listeners.end(), listener );
-	if (it != listeners.end())
-	{
-		listeners.erase(it);
-	}
 }
 
 void InputController::onWorldDimensionsChange( unsigned total_pixel_width_, unsigned total_pixel_height_ )

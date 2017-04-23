@@ -27,7 +27,9 @@ void Controller::setup()
 
 	levelManager = new LevelManager( std::move(levels), viewer );
 	inputController = new InputController( getWindow() );
-	inputController->RegisterEventListener( levelManager );
+
+	inputController->RegisterListener( levelManager );
+	levelManager->RegisterListener( inputController );
 }
 
 void Controller::mouseDown( MouseEvent event )

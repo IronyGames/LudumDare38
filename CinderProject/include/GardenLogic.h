@@ -2,14 +2,15 @@
 
 #include "Typedef.h"
 #include "Segment.h"
-#include "GardenRules.h"
+
+#include <unordered_map>
 
 class IGardenEntityLogic;
 
 class GardenLogic
 {
 public:
-	GardenLogic(GardenRules rules_, std::vector<IGardenEntityLogic*> _plants);
+	GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsigned gardenHeight_, std::vector<IGardenEntityLogic*> entities_ );
 
 	struct Dimensions
 	{
@@ -23,13 +24,14 @@ public:
 
 	std::vector<IGardenEntityLogic*> getEntities() const;
 
-	void updateGardenTo( Year year );
+	void updateGardenDelta( Year year );
 
 private:
-	GardenRules		rules;
-	Segment<Year>	currentState;
+	const Dimensions	dimensions;
+	Segment<Year>		timeline;
+	
 
-	std::map<CoordsInt, IGardenEntityLogic*> world;
+	std::unordered_map<CoordsInt, IGardenEntityLogic*> world;
 
-	std::vector<owner<IGardenEntityLogic>> plants;
+	std::vector<IGardenEntityLogic*> entities;
 };

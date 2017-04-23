@@ -24,3 +24,18 @@ using Year = double;
 
 template<typename T>
 using owner = T*;
+
+
+namespace std
+{
+	template<>
+	class hash<CoordsInt>
+	{
+	public:
+		size_t operator()(const CoordsInt& coord) const
+		{
+			// lazy implementation, this can be improved, a lot!
+			return coord.x + coord.y;
+		}
+	};
+}

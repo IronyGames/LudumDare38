@@ -3,22 +3,22 @@
 #include "IGardenEntityState.h"
 
 PlantVisual::PlantVisual(PlantLogic* _logic)
-:logic(_logic)
+:m_logic(_logic)
 , m_growthColor(cinderColor(0.286, 0.475, 0.161))
 , m_seedColor(cinderColor(0.42, 0.659, 0.263))
+, m_timelineColor(cinderColor(0.631, 0.847, 0.565))
 {
 
 }
 
 CoordsInt PlantVisual::getSeed() const {
-	return CoordsInt();
-	// david: check this
-
-	//return logic->getLifeExpectancy();
+	return m_logic->getPosition();
 }
 
 std::vector<CoordsInt> PlantVisual::getGrownTiles() const {
-	return logic->getCurrentState()->getOccupiedPositions();
+	return std::vector<CoordsInt>();
+	//TODO: david: check this
+	//TODO: return logic->getLifeExpectancy();
 }
 
 cinderColor PlantVisual::getPlantTile(CoordsInt tile)
@@ -29,4 +29,19 @@ cinderColor PlantVisual::getPlantTile(CoordsInt tile)
 cinderColor PlantVisual::getSeedTile()
 {
 	return m_seedColor;
+}
+
+double PlantVisual::getSeedYear()
+{
+	return m_logic->getCurrentState()->currentAge();
+}
+
+cinderColor PlantVisual::getTimelineColor()
+{
+	return m_timelineColor;
+}
+
+double PlantVisual::getMaxAge()
+{
+	return 10.0; //TODO
 }

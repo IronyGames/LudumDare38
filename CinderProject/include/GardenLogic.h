@@ -24,7 +24,7 @@ public:
 
 	std::vector<IGardenEntityLogic*> getEntities() const;
 
-	void updateGardenTo( Year year );
+	void updateGardenDelta( Year year );
 
 private:
 	const Dimensions	dimensions;

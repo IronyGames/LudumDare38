@@ -5,6 +5,7 @@
 
 class Viewer;
 class GardenVisual;
+class GardenLogic;
 class LevelManager;
 class InputController;
 
@@ -16,6 +17,8 @@ public:
 	void draw() override;
 private:
 	Viewer *viewer;
+	GardenVisual *g;
+	GardenLogic *gardenLogic;
 
 	owner<LevelManager>		levelManager;
 	owner<InputController>	inputController;

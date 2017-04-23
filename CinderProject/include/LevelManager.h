@@ -1,7 +1,6 @@
 #pragma once
 #include "InputController.h"
 #include "Level.h"
-
 #include <vector>
 
 class LevelManager : public EventListener
@@ -14,8 +13,7 @@ public:
 private:
 	// EventListener
 	void onTimeChanged( Year deltaYear ) override;
-
-
+  
 	std::vector<Level> levels;
 	size_t currentLevel = 0;
 };

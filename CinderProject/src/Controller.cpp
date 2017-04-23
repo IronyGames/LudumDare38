@@ -8,9 +8,8 @@
 #include "InputController.h"
 #include "GardenLogic.h"
 #include "PlantLogic.h"
-#include "LevelManager.h"
-#include "InputController.h"
 #include "LevelBuilder.h"
+#include "ImageFlyweight.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -21,16 +20,11 @@ void Controller::setup()
 	viewer = new Viewer();
 	setFrameRate(viewer->getFramesPerSecond());
 	setWindowSize(viewer->getWindowSize());
-	std::vector<IGardenEntityLogic*> pes = {
-		new PlantLogic(GardenEntityPattern(), Year(56), CoordsInt(2, 2)),
-		new PlantLogic(GardenEntityPattern(), Year(23), CoordsInt(3, 4)),
-		new PlantLogic(GardenEntityPattern(), Year(7), CoordsInt(1, 5)),
-	};
-	gardenLogic = new GardenLogic(Segment<Year>(0, 100, 0), 13, 13, pes);
-	g = new GardenVisual(gardenLogic);
+
+	ImageFlyweight *imgs = new ImageFlyweight();
 
 	LevelBuilder levelBuilder;
-	std::vector<Level> levels = levelBuilder.LoadLevels("path");
+	std::vector<Level> levels = levelBuilder.LoadLevels("path", imgs);
 
 	levelManager = new LevelManager( std::move(levels) );
 	inputController = new InputController( getWindow() );
@@ -45,7 +39,7 @@ void Controller::update()
 {
 	bool isConnected = levelManagerEventListenerConnection.isConnected();
 	int a = 0;
-	gardenLogic->updateGardenDelta(0.08);
+	
 }
 
 void Controller::draw()

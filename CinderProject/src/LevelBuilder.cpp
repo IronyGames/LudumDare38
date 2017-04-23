@@ -3,8 +3,10 @@
 #include "GardenInitializationData.h"
 #include "PlantLogic.h"
 #include "GardenLogic.h"
+#include "ImageFlyweight.h"
+#include "GardenVisual.h"
 
-std::vector<Level> LevelBuilder::LoadLevels( std::string path )
+std::vector<Level> LevelBuilder::LoadLevels( std::string path, ImageFlyweight *imgs )
 {
 	std::vector<Level> levels;
 
@@ -27,7 +29,8 @@ std::vector<Level> LevelBuilder::LoadLevels( std::string path )
 		}
 		
 		GardenLogic* gardenLogic = new GardenLogic( gardenInitializationData.timeline, gardenInitializationData.gardenWidth, gardenInitializationData.gardenHeight, std::move(gardenObjects) );
-		levels.emplace_back( Level( gardenLogic ) );
+		GardenVisual* gardenVisual = new GardenVisual(gardenLogic, imgs);
+		levels.emplace_back( Level( gardenLogic , gardenVisual ) );
 	}
 
 	return levels;

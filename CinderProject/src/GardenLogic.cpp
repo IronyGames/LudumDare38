@@ -46,7 +46,7 @@ std::vector<IGardenEntityLogic*> GardenLogic::getEntities() const
 	return entities;
 }
 
-GardenLogic::Dimensions::Dimensions( unsigned witdh_, unsigned height_ ) : witdh( witdh_ )
+GardenLogic::Dimensions::Dimensions( unsigned witdh_, unsigned height_ ) : width( witdh_ )
 , height( height_ )
 {
 

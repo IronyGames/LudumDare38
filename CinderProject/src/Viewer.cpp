@@ -120,7 +120,7 @@ void Viewer::renderGarden(GardenVisual *garden)
 	for (int r = 0; r < size.y; r++){
 		cinder::gl::pushMatrices();
 		for (int c = 0; c < size.x; c++){
-			renderTile(garden->getSoilTile(CoordsInt(c, r)));
+			renderTexturedTile(garden->getSoilTile(CoordsInt(c,r)));
 			cinder::gl::translate(translation, 0, 0);
 		}
 		cinder::gl::popMatrices();
@@ -223,4 +223,10 @@ void Viewer::renderPlantTimelines(std::vector<PlantVisual*> plants, double timep
 		cinder::gl::translate(0, markerHeight + timeLineMargin);
 	}
 	cinder::gl::popMatrices();
+}
+
+void Viewer::renderTexturedTile(Image texture)
+{
+	cinder::gl::color(1, 1, 1);
+	renderAnimation2D(new Animation2D(texture, new DimensionsInt(tileSize, tileSize), new CoordsInt(), new Segment<int>(0, 0, 0), false));
 }

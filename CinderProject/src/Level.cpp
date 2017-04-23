@@ -3,9 +3,8 @@
 #include "GardenLogic.h"
 #include "GardenVisual.h"
 
-Level::Level( GardenLogic* gardenLogic_ )
-	: gardenLogic( gardenLogic_ )
-	, gardenVisual( new GardenVisual( gardenLogic ) )
+Level::Level( owner<GardenLogic> gardenLogic_, owner<GardenVisual> gardenVisual_ ) : gardenLogic( gardenLogic_ )
+	, gardenVisual( gardenVisual_ )
 {}
 
 Level::~Level()

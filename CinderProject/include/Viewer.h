@@ -21,6 +21,7 @@ private:
 	void renderTile(cinderColor tileColor);
 	void renderGardenTimeline(GardenVisual *garden);
 	void renderGarden(GardenVisual *garden);
+	void renderTexturedTile(Image texture);
 	void render(std::vector<PlantVisual*> plants);
 	int tileSize;
 	int tileSeparator;

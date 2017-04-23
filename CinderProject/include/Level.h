@@ -8,7 +8,7 @@ class GardenVisual;
 class Level
 {
 public:
-	Level( owner<GardenLogic> gardenLogic_ );
+	Level( owner<GardenLogic> gardenLogic_, owner<GardenVisual> gardenVisual_ );
 	~Level();
 
 	GardenVisual*	getGardenVisual() const;

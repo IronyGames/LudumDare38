@@ -33,7 +33,7 @@ cinderColor PlantVisual::getSeedTile()
 
 double PlantVisual::getSeedYear()
 {
-	return m_logic->getCurrentState()->currentAge();
+	return m_logic->getCurrentLife().getMin();
 }
 
 cinderColor PlantVisual::getTimelineColor()
@@ -43,5 +43,5 @@ cinderColor PlantVisual::getTimelineColor()
 
 double PlantVisual::getMaxAge()
 {
-	return 10.0; //TODO
+	return m_logic->getCurrentLife().getMax();
 }

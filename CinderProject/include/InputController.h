@@ -3,6 +3,7 @@
 #include "cinder/app/Window.h"
 #include "Typedef.h"
 #include "Dispatcher.h"
+#include "boost/optional/optional.hpp"
 
 class IGardenEntityLogic;
 
@@ -14,8 +15,8 @@ public:
 
 private:
 	virtual void onTimeChanged( Year deltaYear ) = 0;
-	virtual void onAddEntity(CoordsInt tile, IGardenEntityLogic* entity) = 0;
-	virtual void onRemoveEntity(CoordsInt tile) = 0;
+	virtual void onAddEntity(CoordsInt tile ) = 0;
+	virtual void onRemoveEntity(CoordsInt tile ) = 0;
 };
 
 class WindowObserver
@@ -38,7 +39,7 @@ public:
 private:
 
 
-	CoordsInt pixelToTile(CoordsInt mousePosition);
+	boost::optional<CoordsInt> pixelToTile(CoordsInt mousePosition);
 
 	cinder::app::WindowRef window;
 	cinder::signals::ScopedConnection m_onKeyPressedConnection;
@@ -47,15 +48,6 @@ private:
 	std::vector<EventListener*> listeners;
 
 	DimensionsInt totalInPixels;
-	unsigned totalWidthInPixels = 0;
-	unsigned totalHeightInPixels = 0;
-
 	DimensionsInt worldInPixels;
-	unsigned worldWidthInPixels = 0;
-	unsigned worldHeightInPixels = 0;
-
 	DimensionsInt worldInGrid;
-	unsigned gardenWidthDimension = 0;
-	unsigned gardenHeightDimension = 0;
-
 };

@@ -45,6 +45,7 @@ std::vector<LevelData> LevelLoader::LoadLevelData( std::string path )
 				plantData.pattern.treePatterns.emplace( pattern );
 			}
 
+			plantData.inventoryCount = plantJson.getValueForKey<int>("inventory_count");
 			plantData.pattern.lifeRange = Segment<Year>( 0, plantJson.getValueForKey<int>("lifeRange"), 0 );
 
 			levelData.plantTypes.emplace(name, plantData);

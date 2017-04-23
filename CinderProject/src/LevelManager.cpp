@@ -3,6 +3,7 @@
 #include "GardenVisual.h"
 #include "PlantLogic.h"
 #include "PlantVisual.h"
+#include "InventoryLogic.h"
 
 LevelManager::LevelManager(std::vector<Level> levels_ )
 	: levels(std::move(levels_))
@@ -20,6 +21,11 @@ GardenLogic* LevelManager::getGardenLogic() const
 	return levels[currentLevel].getGardenLogic();
 }
 
+InventoryLogic* LevelManager::getInventory() const
+{
+	return levels[currentLevel].getInventory();
+}
+
 void LevelManager::selectLevel( unsigned level )
 {
 	currentLevel = level;
@@ -34,18 +40,26 @@ void LevelManager::onTimeChanged( Year deltaYear )
 	assert( result.haveWon == false ); // oh now, you won
 }
 
-void LevelManager::onAddEntity( CoordsInt tile, IGardenEntityLogic* entity )
+void LevelManager::onAddEntity( CoordsInt tile )
 {
-	if (tile == CoordsInt(-1, -1)){
-		return;
+	GardenLogic* gardenLogic = getGardenLogic();
+	const IGardenEntityLogic* entity = gardenLogic->getEntityAt(tile);
+	if ( !entity )
+	{
+		boost::optional<EntityDef> selectedEntityDef = getInventory()->extractSelectedEntityDef();
+		if (selectedEntityDef)
+		{
+			getGardenLogic()->plant( *selectedEntityDef, tile );
+		}
 	}
-	getGardenLogic()->addEntity(entity);
 }
 
 void LevelManager::onRemoveEntity( CoordsInt tile )
 {
-	if (tile == CoordsInt(-1, -1)){
-		return;
+	const IGardenEntityLogic* entity = getGardenLogic()->getEntityAt(tile);
+	if (entity && !entity->isStatic())
+	{
+		EntityDef entityDef = getGardenLogic()->unPlant( tile );
+		getInventory()->addEntity( entityDef, 1);
 	}
-	getGardenLogic()->unPlant(tile);
 }

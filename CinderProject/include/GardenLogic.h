@@ -4,6 +4,7 @@
 #include "Segment.h"
 
 #include <unordered_map>
+#include "EntityDef.h"
 
 class IGardenEntityLogic;
 class IGardenGoalLogic;
@@ -13,8 +14,8 @@ class GardenLogic
 public:
 	GardenLogic( Segment<Year> timeline_, unsigned gardenWidth_, unsigned gardenHeight_, std::vector<IGardenEntityLogic*> entities_, std::vector<IGardenGoalLogic*> objective_ );
 
-	void addEntity(IGardenEntityLogic* entity_);
-	void unPlant(CoordsInt tile);
+	void plant( EntityDef entityDef, CoordsInt tile );
+	EntityDef unPlant(CoordsInt tile);
 
 	struct Dimensions
 	{
@@ -27,6 +28,8 @@ public:
 	Segment<Year>	getCurrentTimeState() const;
 
 	std::vector<IGardenEntityLogic*> getEntities() const;
+	const IGardenEntityLogic* getEntityAt(CoordsInt coord) const;
+	bool hasEntityAt( CoordsInt coord ) const;
 
 	void updateGardenDelta( Year deltaYear );
 

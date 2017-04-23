@@ -3,6 +3,7 @@
 #include "Typedef.h"
 #include "Segment.h"
 #include "boost/optional/optional.hpp"
+#include "EntityDef.h"
 
 class IGardenEntityState;
 
@@ -18,6 +19,7 @@ public:
 	};
 	virtual CalculateStateResult calculateStateTo( Year year, Year deltaYear ) const = 0;
 
+	virtual EntityDef		getEntityDef() const = 0;
 	virtual CoordsInt		getPosition() const = 0;
 	virtual Segment<Year>	getTimeLine() const = 0;
 	virtual Year			getSeedYear() const = 0;
@@ -25,6 +27,7 @@ public:
 	virtual std::vector<CoordsInt> getOccupiedPositions() const = 0;
 	
 	virtual std::string		getType() const = 0;
+	virtual bool			isStatic() const = 0;
 
 	virtual void setCurrentState( Year age, std::vector<CoordsInt> occupiedPositions ) = 0;
 };

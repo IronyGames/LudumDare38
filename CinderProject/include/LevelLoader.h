@@ -21,6 +21,7 @@ class PlantData
 {
 public:
 	GardenEntityPattern	pattern;
+	unsigned inventoryCount = 0;
 };
 
 class LevelData

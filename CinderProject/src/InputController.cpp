@@ -24,14 +24,19 @@ InputController::InputController( cinder::app::WindowRef window_ )
 	m_onMouseClickConnection = window->getSignalMouseDown().connect(
 		[this](const cinder::app::MouseEvent& mouseEvent)
 		{
-			CoordsInt tile = pixelToTile(mouseEvent.getPos());
-			if (mouseEvent.isLeft()){
-				PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), Year(200), tile, "test_plant");
-				emit(&EventListener::onAddEntity, tile, nextSeed);
+			boost::optional<CoordsInt> tile = pixelToTile(mouseEvent.getPos());
+			if (tile)
+			{
+				if(mouseEvent.isLeft())
+				{
+					emit( &EventListener::onAddEntity, *tile );
+				}
+				else if(mouseEvent.isRight())
+				{
+					emit( &EventListener::onRemoveEntity, *tile );
+				}
 			}
-			else if (mouseEvent.isRight()){
-				emit(&EventListener::onRemoveEntity, tile);
-			}
+			
 		});
 
 	onWindowSizeChange( window->getSize().x, window->getSize().y );
@@ -52,14 +57,14 @@ void InputController::onWindowSizeChange( unsigned width_, unsigned height_ )
 	totalInPixels = DimensionsInt(width_, height_);
 }
 
-CoordsInt InputController::pixelToTile(CoordsInt mousePosition)
+boost::optional<CoordsInt> InputController::pixelToTile(CoordsInt mousePosition)
 {
 	int translation = worldInPixels.x / worldInGrid.x;
 	CoordsInt renderingOffset((totalInPixels - worldInPixels).x / 2, (totalInPixels - worldInPixels).y / 3);
 	
-	CoordsInt mouseTile = (mousePosition - renderingOffset) / translation;
-	if (mouseTile.x < 0 || mouseTile.x > worldInGrid.x || mouseTile.y < 0 || mouseTile.y > worldInGrid.y){
-		mouseTile = CoordsInt(-1, -1);
+	boost::optional<CoordsInt> mouseTile = (mousePosition - renderingOffset) / translation;
+	if (mouseTile->x < 0 || mouseTile->x > worldInGrid.x || mouseTile->y < 0 || mouseTile->y > worldInGrid.y){
+		mouseTile = boost::none;
 	}
 
 	return mouseTile;

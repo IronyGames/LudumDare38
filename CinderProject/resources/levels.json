@@ -23,6 +23,7 @@
           {
             "name": "plant_1",
             "lifeRange": 300,
+            "inventory_count": 1,
 
             "pattern": [
               {

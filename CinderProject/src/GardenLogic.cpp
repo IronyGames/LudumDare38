@@ -55,26 +55,46 @@ std::vector<IGardenEntityLogic*> GardenLogic::getEntities() const
 	return entities;
 }
 
-void GardenLogic::addEntity(IGardenEntityLogic* entity_)
+const IGardenEntityLogic* GardenLogic::getEntityAt( CoordsInt coord ) const
 {
-	for (size_t i = 0; i < entities.size(); i++){
-		if (entity_->getPosition() == getEntities().at(i)->getPosition()){
-			return;
-		}
+	auto it = world.find(coord);
+	if (it != world.end())
+	{
+		return it->second;
 	}
-	entities.emplace_back(entity_);
-	addEntityToMap(entity_);
+
+	return nullptr;
 }
 
-void GardenLogic::unPlant(CoordsInt tile)
+bool GardenLogic::hasEntityAt( CoordsInt coord ) const
+{
+	return getEntityAt(coord) != nullptr;
+}
+
+void GardenLogic::plant( EntityDef entityDef, CoordsInt tile )
+{
+	if ( !hasEntityAt( tile ) )
+	{
+		IGardenEntityLogic* newEntity = new PlantLogic(entityDef, getCurrentTimeState().get(), 0, tile );
+		entities.emplace_back( newEntity );
+		addEntityToMap( newEntity );
+
+		updateGardenDelta(0);
+	}
+}
+
+EntityDef GardenLogic::unPlant(CoordsInt tile)
 {
 	IGardenEntityLogic* plant = getEntity(tile);
-	if (plant == nullptr){ 
-		return; 
-		
-	}
+
 	entities.erase(std::remove(entities.begin(), entities.end(), plant), entities.end());
+
+	EntityDef entityDef = plant->getEntityDef();
 	delete plant;
+
+	updateGardenDelta( 0 );
+
+	return entityDef;
 }
 
 IGardenEntityLogic* GardenLogic::getEntity(CoordsInt origin)

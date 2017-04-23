@@ -14,8 +14,16 @@ public:
 	cinderColor getSoilTile(CoordsInt position) const;
 	Segment<Year> getTimeline();
 	cinderColor getTimelineColor() const;
+	DimensionsInt getGardenPixelSize();
+	int getTileTranslation();
+	int getTileSize() const;
+	int getTileSeparator() const;
 private:
 	const GardenLogic *m_logic;
 	cinderColor m_soilColor;
 	cinderColor m_timelineColor;
+
+	CoordsInt centeringOffset;
+	int tileSize;
+	int tileSeparator;
 };

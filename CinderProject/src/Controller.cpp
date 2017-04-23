@@ -25,7 +25,7 @@ void Controller::setup()
 	LevelBuilder levelBuilder;
 	std::vector<Level> levels = levelBuilder.LoadLevels("../resources/levels.json");
 
-	levelManager = new LevelManager( std::move(levels) );
+	levelManager = new LevelManager( std::move(levels), viewer );
 	inputController = new InputController( getWindow() );
 	inputController->RegisterEventListener( levelManager );
 }

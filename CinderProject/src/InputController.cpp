@@ -30,6 +30,17 @@ InputController::InputController( cinder::app::WindowRef window_ )
 				emit( &EventListener::onTimeChanged, Year( -5 ) );
 			}
 		} );
+
+	m_onMouseClickConnection = window->getSignalMouseDown().connect(
+		[this](const cinder::app::MouseEvent& mouseEvent)
+		{
+			if (mouseEvent.isLeft()){
+				emit(&EventListener::onLeftMouse, mouseEvent.getPos());
+			}
+			else if (mouseEvent.isRight()){
+				emit(&EventListener::onRightMouse, mouseEvent.getPos());
+			}
+		});
 }
 
 void InputController::RegisterEventListener( EventListener* listener )

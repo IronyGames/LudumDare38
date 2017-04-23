@@ -20,11 +20,9 @@ private:
 	void onTimeChanged( Year deltaYear ) override;
 // 	void onRewindTime() override;
 // 	void onForwardTime() override;
-	void onAddEntity(CoordsInt mousePosition, const IGardenEntityLogic&) override;
-	void onRemoveEntity(CoordsInt mousePosition) override;
+	void onAddEntity(CoordsInt tile, IGardenEntityLogic* entity) override;
+	void onRemoveEntity(CoordsInt tile) override;
   
 	std::vector<Level> levels;
 	size_t currentLevel = 0;
-
-	CoordsInt getTile(CoordsInt mousePosition);
 };

@@ -1,8 +1,8 @@
 #include "InputController.h"
 
 #include <algorithm>
-
-
+#include "PlantLogic.h"
+#include "GardenEntityPattern.h"
 
 template<typename Method, typename... Args>
 void InputController::emit( Method method, Args&&... args )
@@ -34,11 +34,13 @@ InputController::InputController( cinder::app::WindowRef window_ )
 	m_onMouseClickConnection = window->getSignalMouseDown().connect(
 		[this](const cinder::app::MouseEvent& mouseEvent)
 		{
+			CoordsInt tile = pixelToTile(mouseEvent.getPos());
 			if (mouseEvent.isLeft()){
-				emit(&EventListener::onLeftMouse, mouseEvent.getPos());
+				PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), Year(200), tile, "test_plant");
+				emit(&EventListener::onAddEntity, tile, nextSeed);
 			}
 			else if (mouseEvent.isRight()){
-				emit(&EventListener::onRightMouse, mouseEvent.getPos());
+				emit(&EventListener::onRemoveEntity, tile);
 			}
 		});
 
@@ -61,18 +63,28 @@ void InputController::UnregisterEventListener( EventListener* listener )
 
 void InputController::onWorldDimensionsChange( unsigned total_pixel_width_, unsigned total_pixel_height_ )
 {
-	worldWidthInPixels = total_pixel_width_;
-	worldHeightInPixels = total_pixel_height_;
+	worldInPixels = DimensionsInt(total_pixel_width_, total_pixel_height_);
 }
 
 void InputController::onLevelGridChanged( unsigned width_, unsigned height_ )
 {
-	gardenWidthDimension = width_;
-	gardenHeightDimension = height_;
+	worldInGrid = DimensionsInt(width_, height_);
 }
 
 void InputController::onWindowSizeChange( unsigned width_, unsigned height_ )
 {
-	totalWidthInPixels = width_;
-	totalHeightInPixels = height_;
+	totalInPixels = DimensionsInt(width_, height_);
+}
+
+CoordsInt InputController::pixelToTile(CoordsInt mousePosition)
+{
+	int translation = worldInPixels.x / worldInPixels.x;
+	CoordsInt renderingOffset((totalInPixels - worldInPixels).x / 2, (totalInPixels - worldInPixels).y / 3);
+	
+	CoordsInt mouseTile = (mousePosition - renderingOffset) / translation;
+	if (mouseTile.x < 0 || mouseTile.x > worldInGrid.x || mouseTile.y < 0 || mouseTile.y > worldInGrid.y){
+		mouseTile = CoordsInt(-1, -1);
+	}
+
+	return mouseTile;
 }

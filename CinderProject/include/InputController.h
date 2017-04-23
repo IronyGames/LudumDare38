@@ -13,8 +13,8 @@ public:
 
 private:
 	virtual void onTimeChanged( Year deltaYear ) = 0;
-	virtual void onAddEntity(CoordsInt mousePosition, const IGardenEntityLogic&) = 0;
-	virtual void onRemoveEntity(CoordsInt mousePosition) = 0;
+	virtual void onAddEntity(CoordsInt tile, IGardenEntityLogic* entity) = 0;
+	virtual void onRemoveEntity(CoordsInt tile) = 0;
 };
 
 class WindowObserver
@@ -41,19 +41,22 @@ private:
 
 	template<typename Method, typename... Args>
 	void emit( Method method, Args&&... args );
-
+	CoordsInt pixelToTile(CoordsInt mousePosition);
 	cinder::app::WindowRef window;
 	cinder::signals::ScopedConnection m_onKeyPressedConnection;
 	cinder::signals::ScopedConnection m_onMouseClickConnection;
 
 	std::vector<EventListener*> listeners;
 
+	DimensionsInt totalInPixels;
 	unsigned totalWidthInPixels = 0;
 	unsigned totalHeightInPixels = 0;
 
+	DimensionsInt worldInPixels;
 	unsigned worldWidthInPixels = 0;
 	unsigned worldHeightInPixels = 0;
 
+	DimensionsInt worldInGrid;
 	unsigned gardenWidthDimension = 0;
 	unsigned gardenHeightDimension = 0;
 

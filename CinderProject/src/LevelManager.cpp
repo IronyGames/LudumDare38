@@ -27,36 +27,18 @@ void LevelManager::onTimeChanged( Year deltaYear )
 	assert( result.haveWon == false ); // oh now, you won
 }
 
-void LevelManager::onAddEntity( CoordsInt mousePosition, const IGardenEntityLogic& )
+void LevelManager::onAddEntity( CoordsInt tile, IGardenEntityLogic* entity )
 {
-	CoordsInt clickedTile = getTile(mousePosition);
-	if (clickedTile == CoordsInt(-1, -1)){
+	if (tile == CoordsInt(-1, -1)){
 		return;
 	}
-	PlantLogic *nextSeed = new PlantLogic(GardenEntityPattern(), Year(300), Year(200), clickedTile, "test_plant");
-	getGardenLogic()->addEntity(nextSeed);
+	getGardenLogic()->addEntity(entity);
 }
 
-void LevelManager::onRemoveEntity( CoordsInt mousePosition )
+void LevelManager::onRemoveEntity( CoordsInt tile )
 {
-	CoordsInt clickedTile = getTile(mousePosition);
-	if (clickedTile == CoordsInt(-1, -1)){
+	if (tile == CoordsInt(-1, -1)){
 		return;
 	}
-	getGardenLogic()->unPlant(clickedTile);
-}
-
-CoordsInt LevelManager::getTile(CoordsInt mousePosition)
-{
-	DimensionsInt size = getGardenVisual()->getGardenSize();
-	DimensionsInt pixelSize = getGardenVisual()->getGardenPixelSize();
-	int translation = getGardenVisual()->getTileTranslation();
-	CoordsInt renderingOffset = viewer->getGardenRenderingOffset(getGardenVisual()); //TODO:  
-
-	CoordsInt mouseTile = (mousePosition - renderingOffset) / translation;
-	if (mouseTile.x < 0 || mouseTile.x > size.x || mouseTile.y < 0 || mouseTile.y > size.y){
-		mouseTile = CoordsInt(-1, -1);
-	}
-
-	return mouseTile;
+	getGardenLogic()->unPlant(tile);
 }

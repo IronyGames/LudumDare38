@@ -18,6 +18,7 @@ private:
 	cinderColor* backgroundColor;
 	void render(PlantVisual *plant);
 	void renderTile(cinderColor tileColor);
+	void renderTexturedTile(Image texture);
 	void render(std::vector<PlantVisual*> plants);
 	int tileSize;
 	int tileSeparator;

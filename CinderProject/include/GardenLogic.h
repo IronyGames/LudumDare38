@@ -15,7 +15,7 @@ public:
 	{
 		Dimensions( unsigned witdh_, unsigned height_ );
 
-		unsigned witdh = 0;
+		unsigned width = 0;
 		unsigned height = 0;
 	};
 	Dimensions		getDimensions() const;

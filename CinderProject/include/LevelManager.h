@@ -4,6 +4,7 @@
 #include <vector>
 
 class Viewer;
+class IGardenEntityLogic;
 
 class LevelManager : public EventListener
 {
@@ -19,8 +20,8 @@ private:
 	void onTimeChanged( Year deltaYear ) override;
 // 	void onRewindTime() override;
 // 	void onForwardTime() override;
-	void onLeftMouse(CoordsInt mousePosition) override;
-	void onRightMouse(CoordsInt mousePosition) override;
+	void onAddEntity(CoordsInt mousePosition, const IGardenEntityLogic&) override;
+	void onRemoveEntity(CoordsInt mousePosition) override;
   
 	std::vector<Level> levels;
 	size_t currentLevel = 0;

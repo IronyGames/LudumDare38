@@ -3,6 +3,8 @@
 #include "cinder/app/Window.h"
 #include "Typedef.h"
 
+class IGardenEntityLogic;
+
 class EventListener
 {
 	friend class InputController;
@@ -11,10 +13,8 @@ public:
 
 private:
 	virtual void onTimeChanged( Year deltaYear ) = 0;
-// 	virtual void onRewindTime() = 0;
-// 	virtual void onForwardTime() = 0;
-	virtual void onLeftMouse(CoordsInt mousePosition) = 0;
-	virtual void onRightMouse(CoordsInt mousePosition) = 0;
+	virtual void onAddEntity(CoordsInt mousePosition, const IGardenEntityLogic&) = 0;
+	virtual void onRemoveEntity(CoordsInt mousePosition) = 0;
 };
 
 class InputController

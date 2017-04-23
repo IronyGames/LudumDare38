@@ -24,7 +24,7 @@ void LevelManager::onTimeChanged( Year deltaYear )
 	gardenLogic->updateGardenDelta(deltaYear);
 }
 
-void LevelManager::onLeftMouse( CoordsInt mousePosition )
+void LevelManager::onAddEntity( CoordsInt mousePosition, const IGardenEntityLogic& )
 {
 	CoordsInt clickedTile = getTile(mousePosition);
 	if (clickedTile == CoordsInt(-1, -1)){
@@ -34,7 +34,7 @@ void LevelManager::onLeftMouse( CoordsInt mousePosition )
 	getGardenLogic()->addEntity(nextSeed);
 }
 
-void LevelManager::onRightMouse( CoordsInt mousePosition )
+void LevelManager::onRemoveEntity( CoordsInt mousePosition )
 {
 	CoordsInt clickedTile = getTile(mousePosition);
 	if (clickedTile == CoordsInt(-1, -1)){

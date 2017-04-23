@@ -9,7 +9,7 @@ class GoalData;
 class LevelBuilder
 {
 public:
-	std::vector<Level> LoadLevels( std::string path );
+	std::vector<Level> LoadLevels( std::string path, ImageFlyweight *images );
 
 private:
 	IGardenGoalLogic* BuildGoal( const GoalData& goalData );

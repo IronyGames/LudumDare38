@@ -7,7 +7,7 @@
 #include "StaticGardenGoalLogic.h"
 #include "InventoryLogic.h"
 
-std::vector<Level> LevelBuilder::LoadLevels( std::string path )
+std::vector<Level> LevelBuilder::LoadLevels( std::string path, ImageFlyweight *images )
 {
 	std::vector<Level> levels;
 
@@ -39,7 +39,7 @@ std::vector<Level> LevelBuilder::LoadLevels( std::string path )
 
 		auto goals = BuildGoals( levelData.goals);
 		GardenLogic* gardenLogic = new GardenLogic( gardenInitializationData.timeline, gardenInitializationData.gardenWidth, gardenInitializationData.gardenHeight, std::move(gardenObjects), goals );
-		levels.emplace_back( Level( gardenLogic, inventory ) );
+		levels.emplace_back( Level( gardenLogic, inventory, images ) );
 	}
 
 	return levels;

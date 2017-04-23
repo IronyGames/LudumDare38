@@ -30,6 +30,7 @@ private:
 	FontFactory *fonts;
 	LevelManager *levelManager;
 	InputController *input;
+	Image background;
 
 	Image levelCompleteImage;
 	bool isLevelCompleteState = false;

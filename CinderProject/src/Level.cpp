@@ -3,9 +3,8 @@
 #include "GardenLogic.h"
 #include "GardenVisual.h"
 
-Level::Level( GardenLogic* gardenLogic_, owner<InventoryLogic> inventoryLogic_ )
-	: gardenLogic( gardenLogic_ )
-	, gardenVisual( new GardenVisual( gardenLogic ) )
+Level::Level( owner<GardenLogic> gardenLogic_, owner<InventoryLogic> inventoryLogic_, ImageFlyweight *images_ ) : gardenLogic( gardenLogic_ )
+	, gardenVisual( new GardenVisual( gardenLogic , images_) )
 	, inventoryLogic( inventoryLogic_ )
 {}
 

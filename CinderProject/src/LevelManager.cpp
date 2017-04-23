@@ -13,5 +13,5 @@ GardenVisual* LevelManager::getGardenVisual() const
 void LevelManager::onTimeChanged( Year deltaYear )
 {
 	GardenLogic* gardenLogic = levels[currentLevel].getGardenLogic();
-	gardenLogic->updateGardenTo(deltaYear);
+	gardenLogic->updateGardenDelta(deltaYear);
 }

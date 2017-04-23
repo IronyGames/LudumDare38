@@ -32,8 +32,8 @@ Segment<Year> GardenLogic::getCurrentTimeState() const
 
 void GardenLogic::updateGardenDelta( Year year )
 {
-	rules.timeline += year;
-	for ( IGardenEntityLogic* gardenEntity : plants )
+	timeline += year;
+	for ( IGardenEntityLogic* gardenEntity : getEntities() )
 	{
 		PlantLogic::CalculateStateResult result = gardenEntity->calculateStateTo(year);
 

@@ -22,14 +22,12 @@ void Controller::setup()
 	setFrameRate(viewer->getFramesPerSecond());
 	setWindowSize(viewer->getWindowSize());
 	std::vector<IGardenEntityLogic*> pes = {
-		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(2, 2), Year(56)),
-		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(0, 4), Year(23)),
-		new PlantLogic(EPlantType::k_tree, PlantPattern(), CoordsInt(1, 5), Year(7)),
+		new PlantLogic(GardenEntityPattern(), Year(56), CoordsInt(2, 2)),
+		new PlantLogic(GardenEntityPattern(), Year(23), CoordsInt(3, 4)),
+		new PlantLogic(GardenEntityPattern(), Year(7), CoordsInt(1, 5)),
 	};
-	gardenLogic = new GardenLogic(GardenRules(Segment<Year>(0,100,0), 4, 6), pes);
+	gardenLogic = new GardenLogic(Segment<Year>(0, 100, 0), 13, 13, pes);
 	g = new GardenVisual(gardenLogic);
-	
-	levelManager = new LevelManager();
 
 	LevelBuilder levelBuilder;
 	std::vector<Level> levels = levelBuilder.LoadLevels("path");
@@ -53,7 +51,7 @@ void Controller::update()
 void Controller::draw()
 {
 	viewer->begin();
-	viewer->render( levelManager->getGardenVisual());
+	viewer->render( levelManager->getGardenVisual() );
 	viewer->end();
 }
 

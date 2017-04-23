@@ -18,13 +18,16 @@ class InputController
 public:
 	InputController( cinder::app::WindowRef window_ );
 
-	cinder::signals::Connection RegisterEventListener( EventListener* listener );
+	void RegisterEventListener( EventListener* listener );
+	void UnregisterEventListener( EventListener* listener );
 
 private:
+
+	template<typename Method, typename... Args>
+	void emit( Method method, Args&&... args );
 
 	cinder::app::WindowRef window;
 	cinder::signals::ScopedConnection m_onKeyPressedConnection;
 
-
-	cinder::signals::Signal<void(Year)> m_onTimeChanged;
+	std::vector<EventListener*> listeners;
 };
